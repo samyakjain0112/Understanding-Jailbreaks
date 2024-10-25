@@ -59,11 +59,7 @@ class Trainer:
         C.max_test_iters = 1
 
         # Attack params
-        C.eps_soft_prompt = 0.5
-        C.eps_soft_paraphrase = 1.0
-        C.attack_norm = 'fro'
-
-
+        
         C.attack_jailbreak_mg_text = 1
         C.attack_jailbreak_mg_tokens = 0
         C.attack_jailbreak_co = 0

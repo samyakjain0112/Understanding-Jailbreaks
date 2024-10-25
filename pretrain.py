@@ -11,9 +11,8 @@ import wandb
 import os
 
 os.environ["WANDB_DIR"] = os.path.abspath("./wandb_log")
-parser = argparse.ArgumentParser(description='PyTorch GPT Training')
 
-parser = argparse.ArgumentParser(description='PyTorch DGP')
+parser = argparse.ArgumentParser(description='PyTorch Pre-training')
 parser.add_argument('--BOS_token', default="$", type=str)
 parser.add_argument('--EOS_token', default="%", type=str)
 parser.add_argument('--SOT_token', default="*", type=str)
