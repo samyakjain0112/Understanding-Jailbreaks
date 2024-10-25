@@ -1,4 +1,4 @@
-from model_mod4 import GPT
+from model_activation_space import GPT
 import pickle 
 import numpy as np
 import argparse
@@ -29,10 +29,6 @@ parser.add_argument('--max_input_length', default=35, type=int)
 parser.add_argument('--min_input_length', default=25, type=int)
 parser.add_argument('--start_iter_num', default=0, type=int)
 parser.add_argument('--identity_sample_prob', default=0.5, type=float)
-
-parser.add_argument('--eps_soft_prompt', default=0.5, type=float)
-parser.add_argument('--eps_soft_paraphrase', default=1.0, type=float)
-parser.add_argument('--attack_norm', type=str, default='fro', choices=['fro', 'inf', 'l1'])
 
 parser.add_argument('--num_alphabets', default=30, type=int)
 parser.add_argument('--num_cap', default=4, type=int)
@@ -210,10 +206,6 @@ parser.add_argument('--save_path', type=str, default='./finetune_debug')
 parser.add_argument('--model_load_path', type=str, default='saved_pretrained/model_mini_spec_100k_pcfg_10C_35L_30alph_pcfg_0p5_0p1_comp1_0p2_0p3_comp2_0p2_0p4_new/model_100000.pkl')
 parser.add_argument('--optimizer_load_path', type=str, default='')
 parser.add_argument('--model_load_path2', type=str, default='saved_pretrained/model_mini_spec_100k_pcfg_10C_35L_30alph_pcfg_0p5_0p1_comp1_0p2_0p3_comp2_0p2_0p4_new_new/model_100000.pkl')
-
-parser.add_argument('--attack_jailbreak_mg_text', type=int, default=1)
-parser.add_argument('--attack_jailbreak_mg_tokens', type=int, default=1)
-parser.add_argument('--attack_jailbreak_co', type=int, default=1)
 
 parser.add_argument('--n_emb_value', default=192, type=int)
 parser.add_argument('--num_repeats', default=6, type=int)
