@@ -101,24 +101,6 @@ parser.add_argument('--data_inst_fl_comp', default=False, type=bool)
 parser.add_argument('--perform_co', default=False, type=bool)
 parser.add_argument('--univ_adv', default=True, type=bool)
 
-# parser.add_argument('--path_load_train_data1', type=str, default='')
-# parser.add_argument('--path_load_val_data1', type=str, default='./saved_data_toy_mod_finetune/basic_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
-# parser.add_argument('--path_load_test_data1', type=str, default='./saved_data_toy_mod_finetune/basic_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
-
-# parser.add_argument('--path_load_train_data2', type=str, default='')
-# parser.add_argument('--path_load_val_data2', type=str, default='./saved_data_toy_mod_finetune/basic_data_test_repeat_10_35length_pcfg2_mod_new_toy.pkl')
-# parser.add_argument('--path_load_test_data2', type=str, default='./saved_data_toy_mod_finetune/basic_data_test_repeat_10_35length_pcfg2_mod_new_toy.pkl')
-
-# parser.add_argument('--path_load_train_data3', type=str, default='')
-# parser.add_argument('--path_load_val_data3', type=str, default='./saved_data_toy_mod_finetune/basic_data_test_repeat_10_35length_pcfg3_mod_new_toy.pkl')
-# parser.add_argument('--path_load_test_data3', type=str, default='./saved_data_toy_mod_finetune/basic_data_test_repeat_10_35length_pcfg3_mod_new_toy.pkl')
-
-# parser.add_argument('--path_load_train_data4', type=str, default='')
-# parser.add_argument('--path_load_val_data4', type=str, default='./saved_data_toy_mod_finetune/basic_data_test_repeat_10_35length_pcfg4_mod_new_toy.pkl')
-# parser.add_argument('--path_load_test_data4', type=str, default='./saved_datasaved_data_toy_mod_finetune_toy_mod/basic_data_test_repeat_10_35length_pcfg4_mod_new_toy.pkl')
-
-
-
 parser.add_argument('--path_load_train_data1_safe', type=str, default='./saved_data_toy_mod_finetune/safe_data_train_repeat_10_35length_pcfg1_mod_new_toy.pkl')
 parser.add_argument('--path_load_val_data1_safe', type=str, default='./saved_data_toy_mod_finetune/safe_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
 parser.add_argument('--path_load_test_data1_safe', type=str, default='./saved_data_toy_mod_finetune/safe_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')

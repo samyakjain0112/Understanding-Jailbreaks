@@ -28,9 +28,6 @@ parser.add_argument('--min_input_length', default=25, type=int)
 parser.add_argument('--start_iter_num', default=0, type=int)
 parser.add_argument('--identity_sample_prob', default=0.5, type=float)
 
-parser.add_argument('--eps_soft_prompt', default=0.5, type=float)
-parser.add_argument('--eps_soft_paraphrase', default=1.0, type=float)
-parser.add_argument('--attack_norm', type=str, default='fro', choices=['fro', 'inf', 'l1'])
 
 parser.add_argument('--num_alphabets', default=30, type=int)
 parser.add_argument('--num_cap', default=4, type=int)
@@ -107,19 +104,9 @@ parser.add_argument('--optimizer_load_path', type=str, default='')
 
 
 
-parser.add_argument('--attack_adv', type=int, default=0)
-parser.add_argument('--attack_jailbreak_mg_para', type=int, default=0)
 parser.add_argument('--attack_jailbreak_mg_tokens', type=int, default=0)
 parser.add_argument('--attack_jailbreak_co', type=int, default=0)
 
-parser.add_argument('--threat_count_adv', type=int, default=2)
-parser.add_argument('--threat_pos_adv', type=int, default=-1)
-parser.add_argument('--adv_attack_norm', type=str, default='fro', choices=['fro', 'inf'])
-parser.add_argument('--adv_attack_iters', type=int, default=10)
-parser.add_argument('--jail_mg_para_attack_iters', type=int, default=10)
-parser.add_argument('--jail_mg_para_attack_norm', type=str, default='fro', choices=['fro', 'inf'])
-parser.add_argument('--jail_mg_para_frac', type=float, default=0.1)
-parser.add_argument('--jail_mg_para_attack_type', type=str, default='all', choices=['text_only', 'cap_only','all'])
 parser.add_argument('--n_emb_value', default=192, type=int)
 parser.add_argument('--num_repeats', default=6, type=int)
 
@@ -570,24 +557,11 @@ train_config.save_path = args.save_path
 train_config.model_load_path = args.model_load_path
 train_config.optimizer_load_path = args.optimizer_load_path
 train_config.start_iter_num = args.start_iter_num
-train_config.eps_soft_prompt = args.eps_soft_prompt
-train_config.eps_soft_paraphrase = args.eps_soft_paraphrase
-train_config.attack_norm = args.attack_norm
 train_config.vocab_size = train_dataset.vocab_size
 
 train_config.task_tokens = args.num_cap
-train_config.attack_adv = args.attack_adv
-train_config.attack_jailbreak_mg_para = args.attack_jailbreak_mg_para
 train_config.attack_jailbreak_mg_tokens = args.attack_jailbreak_mg_tokens
 train_config.attack_jailbreak_co = args.attack_jailbreak_co
-train_config.threat_count_adv = args.threat_count_adv
-train_config.threat_pos_adv = args.threat_pos_adv
-train_config.adv_attack_norm = args.adv_attack_norm
-train_config.adv_attack_iters = args.adv_attack_iters
-train_config.jail_mg_para_attack_iters = args.jail_mg_para_attack_iters
-train_config.jail_mg_para_attack_norm = args.jail_mg_para_attack_norm
-train_config.jail_mg_para_frac = args.jail_mg_para_frac
-train_config.jail_mg_para_attack_type = args.jail_mg_para_attack_type
 train_config.n_embd = args.n_emb_value
 train_config.num_cap = args.num_cap
 trainer = Trainer(train_config, model, train_dataset, val_dataset,test_dataset)
