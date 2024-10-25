@@ -45,7 +45,6 @@ class RelativeSelfAttention(nn.Module):
 
     def forward(self, x, mask):
         B, T, C = x.size() # batch size, sequence length, embedding dimensionality (n_embd)
-        #print("C", C)
 
         # calculate query, key, values for all heads in batch and move head forward to be the batch dim
         q, k ,v  = self.c_attn(x).split(self.n_embd, dim=2)
@@ -56,21 +55,12 @@ class RelativeSelfAttention(nn.Module):
         k = k.view(B, T, self.n_head, C // self.n_head).transpose(1, 2) # (B, nh, T, hs)
         q = q.view(B, T, self.n_head, C // self.n_head).transpose(1, 2) # (B, nh, T, hs)
         v = v.view(B, T, self.n_head, C // self.n_head).transpose(1, 2) # (B, nh, T, hs)
-        #print(q.shape)
 
         # causal self-attention; Self-attend: (B, nh, T, hs) x (B, nh, hs, T) -> (B, nh, T, T)
         attn1 = (q @ k.transpose(-2, -1)) 
-        #print(q.size())
-        #print(batch_size*self.n_head)
-        #print(len_q)
-        #print(k.size(-1))
-
         q = q.reshape(batch_size*self.n_head, len_q, k.size(-1)).permute(1, 0, 2)  
         r_q2 = q.contiguous().view(len_q, batch_size*self.n_head,k.size(-1)) #T*bs(h)*emb/head
-        #print(r_q2.shape)
         r_k2 = self.relative_position_k(len_q, len_k)
-        #print(r_q2.shape)
-        #print(r_k2.shape)
         attn2 = torch.matmul(r_q2, r_k2.transpose(1, 2)).transpose(0, 1)
         attn2 = attn2.contiguous().view(batch_size, self.n_head, len_q, len_k)
         att = (attn1 + attn2)* (1.0 / math.sqrt(k.size(-1)))
@@ -163,10 +153,6 @@ class CausalSelfAttention(nn.Module):
     def forward(self, x, mask):
         B, T, C = x.size() # batch size, sequence length, embedding dimensionality (n_embd)
 
-        # calculate query, key, values for all heads in batch and move head forward to be the batch dim
-        #x = x.view(-1,self.n_embd)
-        #print("X", x.size())
-        #print(self.n_embd)
         out = self.c_attn(x)
         q, k ,v  = out.split(self.n_embd, dim=2)
         k = k.view(B, T, self.n_head, C // self.n_head).transpose(1, 2) # (B, nh, T, hs)
@@ -176,13 +162,10 @@ class CausalSelfAttention(nn.Module):
         # causal self-attention; Self-attend: (B, nh, T, hs) x (B, nh, hs, T) -> (B, nh, T, T)
         att = (q @ k.transpose(-2, -1)) * (1.0 / math.sqrt(k.size(-1)))
         att = att.masked_fill(mask[:,:,:T,:T] == 0, float('-inf'))
-        #print("Pre-softmax", att)
+
         att = F.softmax(att, dim=-1)
         att = torch.nan_to_num(att, nan=0.0)
-        #att = att.masked_fill(att[:,:,:,:]==float('nan'), 0)
-        #print("Post-softmax", att)
-        
-        #c+=1
+
         att = self.attn_dropout(att)
         y = att @ v # (B, nh, T, T) x (B, nh, T, hs) -> (B, nh, T, hs)
         y = y.transpose(1, 2).contiguous().view(B, T, C) # re-assemble all head outputs side by side
@@ -205,34 +188,15 @@ class Block(nn.Module):
             self.attn = RotarySelfAttention(config)
 
         self.ln_2 = nn.LayerNorm(config.n_embd)
-        #self.mlp = nn.ModuleDict(dict(
         self.c_fc    = nn.Linear(config.n_embd, config.scale_internal * config.n_embd)
         self.c_proj  = nn.Linear(config.scale_internal * config.n_embd, config.n_embd)
         self.act     = NewGELU()
         self.dropout = nn.Dropout(config.resid_pdrop)
-        #))
-        #m = self.mlp
-        #self.mlpf = lambda x: m.dropout(m.c_proj(m.act(m.c_fc(x)))) # MLP forward
 
     def forward(self, x, mask):
         x = self.ln_1(x)
-        #print("Layer1:",x)
-        #print("Layer norm",x.size())
-        #mask = mask.cuda()
         x = x + self.attn(x, mask)
-        #print("Layer2:",x)
-        #out = self.ln_2(x)
-        #print("1:",out)
-        #out2 = 
-        #print("2:",out2)
-        #x = self.act(out2)
-        #print("3:",x)
-        #x = self.c_proj(x)
-        #print("4:",x)
-        #x = x + self.dropout(x)
         x = x + self.dropout(self.c_proj(self.act(self.c_fc(x))))
-        #x = x + self.mlpf(self.ln_2(x))
-        #print("Layer3:",x)
         return x
 
 class PositionalEncoding(nn.Module):
@@ -325,8 +289,6 @@ class GPT(nn.Module):
                 'wrn2-xl':      dict(n_layer=48, n_head=25, n_embd=1600), # 1558M params
                 # Gophers
                 'gopher-44m':   dict(n_layer=8, n_head=16, n_embd=512),
-                # (there are a number more...)
-                # I made these tiny models up
                 'wrn2-cfg-medium':     dict(n_layer=8, n_head=8, n_embd=400),
                 'wrn2-cfg-mini':     dict(n_layer=6, n_head=6, n_embd=192),
                 'wrn2-cfg-micro':    dict(n_layer=4, n_head=4, n_embd=128),
@@ -473,11 +435,7 @@ class GPT(nn.Module):
         assert t <= self.block_size, f"Cannot forward sequence of length {t}, block size is only {self.block_size}"
         pos = torch.arange(0, t, dtype=torch.long, device=device).unsqueeze(0) # shape (1, t)
 
-        # forward the GPT model itself
-        #print("vocab_size", self.vocab_size)
-        #print("IDX",idx)
-        #print("n_emb", self.n_embd)
-        # position embeddings of shape (1, t, n_embd)
+
         if attack=='emb':
             tok_emb = self.transformer.wte(idx)
             return tok_emb
@@ -493,7 +451,6 @@ class GPT(nn.Module):
         x = self.transformer.ln_f(x)
         logits = self.lm_head(x)
 
-        # if we are given some desired targets also calculate the loss
         loss = None
         if targets is not None:
             if is_dpo==False:
@@ -501,7 +458,6 @@ class GPT(nn.Module):
             else:
                 loss = F.cross_entropy(logits.view(-1, logits.size(-1)), targets.view(-1), ignore_index=self.tokenizer[self.pad_token],reduction='none')
 
-            #print(loss)
             
 
         return logits, loss
@@ -538,23 +494,9 @@ class GPT(nn.Module):
 
     @torch.no_grad()
     def generate_next_token(self, idx, y, mask, temperature=1.0, do_sample=False, top_k=None):
-        # if the sequence context is growing too long we must crop it at block_size
         idx_cond = idx 
         logits, loss = self(idx_cond,y, mask)
-        #acc = logits.view(-1, logits.size(-1)).argmax(dim=-1)==y.view(-1)
-        #acc_AT = logits[pad_idx].view(-1, logits.size(-1)).argmax(dim=-1)==y_label.view(-1)
         batch_size = logits.shape[0]
         seq_length = logits.shape[1]
         vocab_size = logits.shape[-1]
-        #logits = logits.view(-1,vocab_size)
-        # pluck the logits at the final step and scale by desired temperature
-        #logits = logits[:, :] / temperature
-        # optionally crop the logits to only the top k options
-        #probs = F.softmax(logits, dim=-1)
-        # either sample from the distribution or take the most likely element
-        #if do_sample:
-        #    idx_next = torch.multinomial(probs, num_samples=1)
-        #else:
-        #    _, idx_next = torch.topk(probs, k=1, dim=-1)
-        #idx_next = idx_next.view(batch_size, seq_length)
         return logits, loss
