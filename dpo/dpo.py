@@ -50,7 +50,6 @@ parser.add_argument('--test_evaluate_iter', default=100, type=int)
 parser.add_argument('--save_iter', default=10000, type=int)
 parser.add_argument('--max_iters', default=10000, type=int)
 parser.add_argument('--learning_rate', default=1e-10, type=float)
-parser.add_argument('--ds', default=1, type=int)
 parser.add_argument('--min_lr', default=1e-11, type=float)
 parser.add_argument('--batch_size', default=512, type=int)
 parser.add_argument('--test_batch_size', default=50, type=int)
@@ -153,37 +152,37 @@ parser.add_argument('--path_load_test_data4_duplicate', type=str, default='./sav
 
 
 parser.add_argument('--path_load_train_data1_ood_mg', type=str, default='')
-parser.add_argument('--path_load_val_data1_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_pcfg1')
-parser.add_argument('--path_load_test_data1_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_pcfg1')
+parser.add_argument('--path_load_val_data1_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_pcfg1.pkl')
+parser.add_argument('--path_load_test_data1_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_pcfg1.pkl')
 
 parser.add_argument('--path_load_train_data2_ood_mg', type=str, default='')
-parser.add_argument('--path_load_val_data2_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_pcfg2')
-parser.add_argument('--path_load_test_data2_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_pcfg2')
+parser.add_argument('--path_load_val_data2_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_pcfg2.pkl')
+parser.add_argument('--path_load_test_data2_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_pcfg2.pkl')
 
 parser.add_argument('--path_load_train_data3_ood_mg', type=str, default='')
-parser.add_argument('--path_load_val_data3_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_pcfg3')
-parser.add_argument('--path_load_test_data3_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_pcfg3')
+parser.add_argument('--path_load_val_data3_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_pcfg3.pkl')
+parser.add_argument('--path_load_test_data3_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_pcfg3.pkl')
 
 parser.add_argument('--path_load_train_data4_ood_mg', type=str, default='')
-parser.add_argument('--path_load_val_data4_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_pcfg4')
-parser.add_argument('--path_load_test_data4_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_pcfg4')
+parser.add_argument('--path_load_val_data4_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_pcfg4.pkl')
+parser.add_argument('--path_load_test_data4_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_pcfg4.pkl')
 
 
-parser.add_argument('--path_load_train_data1_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_train_pcfg1')
-parser.add_argument('--path_load_val_data1_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_pcfg1')
-parser.add_argument('--path_load_test_data1_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_pcfg1')
+parser.add_argument('--path_load_train_data1_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_train_pcfg1.pkl')
+parser.add_argument('--path_load_val_data1_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_pcfg1.pkl')
+parser.add_argument('--path_load_test_data1_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_pcfg1.pkl')
 
-parser.add_argument('--path_load_train_data2_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_train_pcfg2')
-parser.add_argument('--path_load_val_data2_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_pcfg2')
-parser.add_argument('--path_load_test_data2_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_pcfg2')
+parser.add_argument('--path_load_train_data2_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_train_pcfg2.pkl')
+parser.add_argument('--path_load_val_data2_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_pcfg2.pkl')
+parser.add_argument('--path_load_test_data2_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_pcfg2.pkl')
 
-parser.add_argument('--path_load_train_data3_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_train_pcfg3')
-parser.add_argument('--path_load_val_data3_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_pcfg3')
-parser.add_argument('--path_load_test_data3_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_pcfg3')
+parser.add_argument('--path_load_train_data3_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_train_pcfg3.pkl')
+parser.add_argument('--path_load_val_data3_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_pcfg3.pkl')
+parser.add_argument('--path_load_test_data3_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_pcfg3.pkl')
 
-parser.add_argument('--path_load_train_data4_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_train_pcfg4')
-parser.add_argument('--path_load_val_data4_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_pcfg4')
-parser.add_argument('--path_load_test_data4_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_pcfg4')
+parser.add_argument('--path_load_train_data4_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_train_pcfg4.pkl')
+parser.add_argument('--path_load_val_data4_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_pcfg4.pkl')
+parser.add_argument('--path_load_test_data4_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_pcfg4.pkl')
 
 parser.add_argument('--train_type', type=str, default='adv', choices=['filter', 'adv'])
 parser.add_argument('--prob_safe', type=float, default=0.2)
@@ -237,41 +236,6 @@ if not os.path.exists('saved_safety_finetuned/' + args.save_path):
     os.makedirs('saved_safety_finetuned/' + args.save_path)
 
 wandb.init(name=args.wandb_run,notes = args.wandb_notes,project = args.wandb_project,dir = args.wandb_dir,config=args)
-
-
-args.path_load_val_data1_ood_mg = args.path_load_val_data1_ood_mg + '_mod{}.pkl'.format(args.ds)
-args.path_load_test_data1_ood_mg = args.path_load_test_data1_ood_mg + '_mod{}.pkl'.format(args.ds)
-args.path_load_train_data1_ood_mg = args.path_load_train_data1_ood_mg
-
-args.path_load_val_data2_ood_mg = args.path_load_val_data2_ood_mg + '_mod{}.pkl'.format(args.ds)
-args.path_load_test_data2_ood_mg = args.path_load_test_data2_ood_mg + '_mod{}.pkl'.format(args.ds)
-args.path_load_train_data2_ood_mg = args.path_load_train_data2_ood_mg
-
-args.path_load_val_data3_ood_mg = args.path_load_val_data3_ood_mg + '_mod{}.pkl'.format(args.ds)
-args.path_load_test_data3_ood_mg = args.path_load_test_data3_ood_mg + '_mod{}.pkl'.format(args.ds)
-args.path_load_train_data3_ood_mg = args.path_load_train_data3_ood_mg
-
-args.path_load_val_data4_ood_mg = args.path_load_val_data4_ood_mg + '_mod{}.pkl'.format(args.ds)
-args.path_load_test_data4_ood_mg = args.path_load_test_data4_ood_mg + '_mod{}.pkl'.format(args.ds)
-args.path_load_train_data4_ood_mg = args.path_load_train_data4_ood_mg
-
-args.path_load_val_data1_id_mg = args.path_load_val_data1_id_mg + '_mod{}.pkl'.format(args.ds)
-args.path_load_test_data1_id_mg = args.path_load_test_data1_id_mg + '_mod{}.pkl'.format(args.ds)
-args.path_load_train_data1_id_mg = args.path_load_train_data1_id_mg + '_mod{}.pkl'.format(args.ds)
-
-args.path_load_val_data2_id_mg = args.path_load_val_data2_id_mg + '_mod{}.pkl'.format(args.ds)
-args.path_load_test_data2_id_mg = args.path_load_test_data2_id_mg + '_mod{}.pkl'.format(args.ds)
-args.path_load_train_data2_id_mg = args.path_load_train_data2_id_mg + '_mod{}.pkl'.format(args.ds)
-
-args.path_load_val_data3_id_mg = args.path_load_val_data3_id_mg + '_mod{}.pkl'.format(args.ds)
-args.path_load_test_data3_id_mg = args.path_load_test_data3_id_mg + '_mod{}.pkl'.format(args.ds)
-args.path_load_train_data3_id_mg = args.path_load_train_data3_id_mg + '_mod{}.pkl'.format(args.ds)
-
-args.path_load_val_data4_id_mg = args.path_load_val_data4_id_mg + '_mod{}.pkl'.format(args.ds)
-args.path_load_test_data4_id_mg = args.path_load_test_data4_id_mg + '_mod{}.pkl'.format(args.ds)
-args.path_load_train_data4_id_mg = args.path_load_train_data4_id_mg + '_mod{}.pkl'.format(args.ds)
-
-args.save_path = args.save_path + '_mod{}'.format(args.ds)
 
 class DGP_sample():
     def __init__(self, args, split='train', seed_lst=[], num_samples=100000, rules_pass=[], loader_unsafe=[], loader_safe=[], loader_duplicate=[], loader_intermediate=[], loader_ood_mg=[], loader_id_mg=[], sample_prob=[], leaf_nodes=[], grammar_NT_T=[], rules={}, pcfg_num=[],safe_branch_prob=0, unsafe_branch_prob=0, intermediate_prob=0, prob_all=0, duplicate_prob=0, id_mg_prob=0, ood_mg_prob=0, is_safe_value=0,data_inst_fl_comp=False, data_inst_fl_direct=False):

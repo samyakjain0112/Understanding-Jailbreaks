@@ -32,10 +32,27 @@ python ./data_generator/make_data_safety_finetune_pcfg1.py --unsafe_id_mg True -
 ```
 Similarly generate the datasets for other three PCFGs.
 
-### Pre-training and instruction fine-tuning
+### Pre-training
+To encourage the learning of the PCFG grammar rules before the bijective functions, we train the model primarily on text generated from PCFGs first, and later train it on bijective outputs as well. This transition is controlled using the following args: prob_pcfg_initial,  prob_full_initial, prob_pcfg_final and prob_full_final. To run the pre-training, follow the command below:
 
+```
+python pretrain.py --learning_rate 0.001 --model_type 'wrn2-cfg-mini' --prob_pcfg_initial 0.5 --prob_full_initial 0.1 --prob_comp1_initial 0.2 --prob_comp2_initial 0.2  --prob_pcfg_final 0.1 --prob_full_final 0.2 --prob_comp1_final 0.3 --prob_comp2_final 0.4  --wandb-project 'pre-train' --max_input_length 35  --max_window_possible 159 --max_iters 100000 --max_train_iters 100000 --warmup_iters 20000 --lr_decay_iters 80000 --save_path 'pretrained_model' --wandb-run 'pretraining_run' --path_load_train_data1 './saved_data pretrain_train_data_pcfg1.pkl' --path_load_train_data2 './saved_data pretrain_train_data_pcfg2.pkl' --path_load_train_data3 './saved_data/3.pkl' --path_load_train_data4 './saved_data/pretrain_train_data_pcfg4.pkl'   --path_load_val_data1 './saved_data/pretrain_train_data_pcfg1.pkl' --path_load_val_data2 './saved_data/pretrain_train_data_pcfg2.pkl' --path_load_val_data3 './saved_data/pretrain_train_data_pcfg3.pkl' --path_load_val_data4 './saved_data/pretrain_train_data_pcfg4.pkl'   --path_load_test_data1 './saved_data/pretrain_test_data_pcfg1.pkl' --path_load_test_data2 './saved_data/pretrain_test_data_pcfg2.pkl' --path_load_test_data3 './saved_data/pretrain_test_data_pcfg3.pkl' --path_load_test_data4 './saved_data/pretrain_test_data_pcfg4.pkl'
+
+```
 
 ### Safety fine-tuning
+
+We use three different safety fine-tuning protocols: supervised safety fine-tuning, direct preference optimization and unlearning. The corresponding commands for each of them are given below:
+
+* Supervised safety fine-tuning (SSFT)
+python ./ssft/ssft.py  --grad_norm_clip 1.0 --model_load_path 'saved_pretrained/pretrained_model/model_100000.pkl'  --learning_rate 0.0001 --min_lr 0.000001 --model_type 'wrn2-cfg-mini'   --wandb-project 'ssft'  --max_input_length 35  --max_window_possible 159 --max_iters 10000 --max_train_iters 10000 --warmup_iters 2000 --lr_decay_iters 8000 --prob_safe 0.8 --prob_unsafe 0.2 --safe_branch_prob 0.5 --id_mg_prob 0.5  --save_path 'ssft_train' --wandb-run 'ssft_train'
+
+
+* Direct Preference Opimization (DPO)
+python dpo/dpo.py  --grad_norm_clip 1.0 --model_load_path 'saved_pretrained/pretrained_model/model_100000.pkl'  --learning_rate 0.0001 --min_lr 0.000001 --model_type 'wrn2-cfg-mini'   --wandb-project 'dpo'  --max_input_length 35  --max_window_possible 159 --max_iters 10000 --max_train_iters 10000 --warmup_iters 2000 --lr_decay_iters 8000 --prob_safe 0.5 --prob_unsafe 0.5 --safe_branch_prob 0.5 --id_mg_prob 0.5 --is_dpo 1 --dpo_weight_safe 0.1 --dpo_weight_unsafe 0.01  --save_path 'dpo_train' --wandb-run 'dpo_train'
+
+* Unlearning
+python unlearn/unlearn.py  --grad_norm_clip 1.0 --model_load_path 'saved_pretrained/pretrained_model/model_100000.pkl'  --learning_rate 0.0001 --min_lr 0.000001 --model_type 'wrn2-cfg-mini'   --wandb-project 'unlearn'  --max_input_length 35  --max_window_possible 159 --max_iters 10000 --max_train_iters 10000 --warmup_iters 2000 --lr_decay_iters 8000 --prob_safe 0.5 --prob_unsafe 0.5 --safe_branch_prob 0.5 --id_mg_prob 0.5 --is_unlearn 1 --unlearn_weight_safe 1 --unlearn_weight_unsafe 0.1  --save_path 'unlearn_train' --wandb-run 'unlearn_train'
 
 
 ### Evaluations
