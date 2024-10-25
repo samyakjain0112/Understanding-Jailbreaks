@@ -7,7 +7,7 @@ The official implementation of "What Makes and Breaks Safety Fine-tuning? A Mech
 > [**What Makes and Breaks Safety Fine-tuning? A Mechanistic Study**](https://arxiv.org/abs/2407.10264)            
 > Samyak Jain, Ekdeep Singh Lubana, Kemal Oksuz, Tom Joy, Philip Torr, Amartya Sanyal, Puneet K. Dokania
 
-
+![alt text](activation_space_analysis.png)
 
 ## Abstract
 Safety fine-tuning helps align Large Language Models (LLMs) with human preferences for their safe deployment. To better understand the underlying factors that make models safe via safety fine-tuning, we design a synthetic data generation framework that captures salient aspects of an unsafe input by modeling the interaction between the task the model is asked to perform (e.g., “design”) versus the specific concepts the task is asked to be performed upon (e.g., a “cycle” vs. a “bomb”). Using this, we investigate three well-known safety fine-tuning methods—supervised safety fine-tuning, direct preference optimization, and unlearning—and
