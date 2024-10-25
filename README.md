@@ -42,7 +42,7 @@ python pretrain.py --learning_rate 0.001 --model_type 'wrn2-cfg-mini' --prob_pcf
 
 ### Safety fine-tuning
 
-We use three different safety fine-tuning protocols: supervised safety fine-tuning, direct preference optimization and unlearning. The corresponding commands for each of them are given below:
+This repository supports three different safety fine-tuning protocols: supervised safety fine-tuning, direct preference optimization and unlearning. The corresponding commands for each of them are given below:
 
 * Supervised safety fine-tuning (SSFT)
 ```
@@ -61,6 +61,17 @@ python unlearn/unlearn.py  --grad_norm_clip 1.0 --model_load_path 'saved_pretrai
 
 ### Evaluations
 
+* For analyzing the the feature space, similar to Fig.3 run
+
+
+* For feature space analysis on performing adversarial attacks, run
+
+
+* For analyzing the column space of the learned update, similar to Fig.4 run
+
+* For analyzing the row space of the learned update, similar to Fig.5 run
+
+* For analyzing the sensitivity of the learned function (lipschitzness analysis), similar to Fig.6 run
 
 
 ## How to Cite
