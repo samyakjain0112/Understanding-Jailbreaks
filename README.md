@@ -24,7 +24,7 @@ pip install -r requirements.txt
 To make the datasets used for pre-training run
 
 ```
-python ./data_generator/make_data_pretrain.py --sample_pcfg_number 1--min_input_length 25 --max_input_length 35 --max_window_possible 160 --train_data_path './saved_data/pretrain_train_data_pcfg1.pkl' --start_random 0  --test_data_path './saved_data/pretrain_test_data_pcfg1.pkl'
+python ./data_generator/make_data_pretrain.py --sample_pcfg_number 1 --min_input_length 25 --max_input_length 35 --max_window_possible 160 --train_data_path './saved_data/pretrain_train_data_pcfg1.pkl' --start_random 0  --test_data_path './saved_data/pretrain_test_data_pcfg1.pkl'
 ```
 
 ```
@@ -60,25 +60,38 @@ python unlearn/unlearn.py  --grad_norm_clip 1.0 --model_load_path 'saved_pretrai
 ```
 
 ### Evaluations
-Use the ```data_test``` argument to decide the test set. It takes values of the following format ```{attack_name}_{branch_name}```. The posisble values are: 'std_unsafe', 'std_safe', 'mg_tokens', 'mg_txt', 'if_text_safe', 'if_text_unsafe', 'if_text_safe', 'if_txt'
+Use the ```data_test``` argument to define the test set. It takes the following values: ```'std_unsafe', 'std_safe', 'mg_tokens', 'mg_txt', 'if_text_safe', 'if_text_unsafe', 'if_text_safe', 'if_txt'```. Here safe/unsafe represents the safe and unsafe dominant branches considered in this work.
 
 * For analyzing the the feature space, similar to Fig.3 run
 ```
-python evals/activation_space_analysis.py --plot_path 'pretrained_model' --data_test 'std_unsafe' --model_load_path 'saved_pretrained/pretrained_model model_100000.pkl'  --model_type 'wrn2-cfg-mini'  --max_input_length 35  --max_window_possible 159 --max_iters 10000 --max_train_iters 10000  --save_path 'actiation_space'
+python evals/activation_space_analysis.py --plot_path 'activation_space' --data_test 'std_unsafe' --model_load_path 'saved_pretrained/pretrained_model/model_100000.pkl'  --model_type 'wrn2-cfg-mini'  --max_input_length 35  --max_window_possible 159 --max_iters 10000 --max_train_iters 10000  --save_path 'actiation_space'
 ```
 
-* The ```threat_count_adv``` argument is used to define the count of appended soft tokens. To feature space analysis using adversarial attacks, run
+* The ```threat_count_adv``` arg is used to define the count of appended soft tokens. To feature space analysis using adversarial attacks, run
 ```
-python evals/activation_space_adv_analysis.py --plot_path 'pretrained_model' --data_test 'std_unsafe' --model_load_path 'saved_pretrained/pretrained_model model_100000.pkl'  --model_type 'wrn2-cfg-mini'  --max_input_length 35  --max_window_possible 159 --max_iters 10000 --max_train_iters 10000  --save_path 'adv_actiation_space' --threat_count_adv 2
+python evals/activation_space_adv_analysis.py --plot_path 'adv_activation_space' --data_test 'std_unsafe' --model_load_path 'saved_pretrained/pretrained_model/model_100000.pkl'  --model_type 'wrn2-cfg-mini'  --max_input_length 35  --max_window_possible 159 --max_iters 10000 --max_train_iters 10000  --save_path 'adv_actiation_space' --threat_count_adv 2
 ```
 
 * For analyzing the column space of the learned update, similar to Fig.4 run
+```
+python column_space_analysis.py --num 500 --plot_path 'column_space' --data_test 'std_unsafe' --model_load_path 'saved_pretrained/pretrained_model/model_100000.pkl' --model_type 'wrn2-cfg-mini'  --max_input_length 35  --max_window_possible 159 --max_iters 10000  --save_path 'column_space'
+```
 
 * For analyzing the row space of the learned update, similar to Fig.5 run
+```
+python row_space_analysis.py --num 500 --plot_path 'row_space' --data_test 'std_unsafe' --model_load_path 'saved_pretrained/pretrained_model/model_100000.pkl' --model_type 'wrn2-cfg-mini'  --max_input_length 35  --max_window_possible 159   --save_path 'row_space'
+```
 
 * For analyzing the sensitivity of the learned function (lipschitzness analysis), similar to Fig.6 run
+```
+CUDA_VISIBLE_DEVICES=2  python lipschitzness_analysis.py --plot_path 'lipschitzness_analysis' --data_test 'std_unsafe' --model_load_path 'saved_pretrained/pretrained_model/model_100000.pkl'  --model_type 'wrn2-cfg-mini' --max_input_length 35  --max_window_possible 159 --save_path 'lipschitzness_analysis'
+```
+
+Change ```model_load_path``` to load your desired model.
 
 
+### Jupyter Notebook
+We have also provided a jupyter notebook  ```visualize.ipnyb``` to play around with the given checkpoints in ```/saved_models```.
 ## How to Cite
 
 Please cite the paper if you benefit from our paper or the repository:
@@ -87,7 +100,7 @@ Please cite the paper if you benefit from our paper or the repository:
 @inproceedings{
 jain2024what,
 title={What Makes Safety Fine-tuning Methods Safe? A Mechanistic Study},
-author={Anonymous},
+author={Samyak Jain, Ekdeep Singh Lubana, Kemal Oksuz, Tom Joy, Philip Torr, Amartya Sanyal, Puneet K. Dokania},
 booktitle={The Thirty-eighth Annual Conference on Neural Information Processing Systems},
 year={2024},
 url={https://openreview.net/forum?id=JEflV4nRlH}
