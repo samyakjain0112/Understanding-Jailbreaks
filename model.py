@@ -426,7 +426,7 @@ class GPT(nn.Module):
     
         
 
-    def forward(self, idx, targets=None, mask=None, attack=None, emb=[],is_dpo=False):    
+    def forward(self, idx, targets=None, mask=None, attack=None, emb=[]):    
         device = idx.device
         if attack=='emb_in':
             b, t = idx.shape[0], idx.shape[1]
@@ -453,11 +453,7 @@ class GPT(nn.Module):
 
         loss = None
         if targets is not None:
-            if is_dpo==False:
-                loss = F.cross_entropy(logits.view(-1, logits.size(-1)), targets.view(-1), ignore_index=self.tokenizer[self.pad_token])
-            else:
-                loss = F.cross_entropy(logits.view(-1, logits.size(-1)), targets.view(-1), ignore_index=self.tokenizer[self.pad_token],reduction='none')
-
+            loss = F.cross_entropy(logits.view(-1, logits.size(-1)), targets.view(-1), ignore_index=self.tokenizer[self.pad_token])
             
 
         return logits, loss

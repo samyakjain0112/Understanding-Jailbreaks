@@ -85,15 +85,19 @@ parser.add_argument('--sample_pcfg_number3', default=3, type=int)
 parser.add_argument('--sample_pcfg_number4', default=4, type=int)
 
 parser.add_argument('--path_load_train_data1', type=str, default='./saved_data_toy/pretrain_data_train_pcfg1.pkl')
+parser.add_argument('--path_load_val_data1', type=str, default='./saved_data_toy/pretrain_data_train_pcfg1.pkl')
 parser.add_argument('--path_load_test_data1', type=str, default='./saved_data_toy/pretrain_data_test_pcfg1.pkl')
 
 parser.add_argument('--path_load_train_data2', type=str, default='./saved_data_toy/pretrain_data_train_pcfg2.pkl')
+parser.add_argument('--path_load_val_data2', type=str, default='./saved_data_toy/pretrain_data_train_pcfg2.pkl')
 parser.add_argument('--path_load_test_data2', type=str, default='./saved_data_toy/pretrain_data_test_pcfg2.pkl')
 
 parser.add_argument('--path_load_train_data3', type=str, default='./saved_data_toy/pretrain_data_train_pcfg3.pkl')
+parser.add_argument('--path_load_val_data3', type=str, default='./saved_data_toy/pretrain_data_train_pcfg3.pkl')
 parser.add_argument('--path_load_test_data3', type=str, default='./saved_data_toy/pretrain_data_test_pcfg3.pkl')
 
 parser.add_argument('--path_load_train_data4', type=str, default='./saved_data_toy/pretrain_data_train_pcfg4.pkl')
+parser.add_argument('--path_load_val_data4', type=str, default='./saved_data_toy/pretrain_data_train_pcfg4.pkl')
 parser.add_argument('--path_load_test_data4', type=str, default='./saved_data_toy/pretrain_data_test_pcfg4.pkl')
 
 
