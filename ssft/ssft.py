@@ -1,5 +1,5 @@
 from model import GPT
-from mech_sft.ssft.trainer_ssft_old import Trainer
+from trainer_ssft import Trainer
 import pickle 
 import numpy as np
 import argparse
