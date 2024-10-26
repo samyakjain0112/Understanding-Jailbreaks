@@ -28,9 +28,10 @@ CUDA_VISIBLE_DEVICES=0 python ./data_generator/make_data_pretrain.py --sample_pc
 ```
 
 ```
-CUDA_VISIBLE_DEVICES=0 python ./data_generator/make_data_safety_finetune_pcfg1.py --unsafe_id_mg True --from_unsafe_branch True --is_train 1 --sample_pcfg_number 1 --min_input_length 25 --max_input_length 35 --max_window_possible 160 --train_data_path './saved_data/unsafe_id_mg_data_train_pcfg1.pkl' --start_random 0  --test_data_path './saved_data/unsafe_id_mg_data_test_pcfg1.pkl'
+CUDA_VISIBLE_DEVICES=0 python data_generator/make_data_safety_finetune_pcfg1.py --unsafe_id_mg True --from_unsafe_branch True --is_train 1 --sample_pcfg_number 1 --min_input_length 25 --max_input_length 35 --max_window_possible 160 --train_data_path 'saved_data/unsafe_id_mg_data_train_pcfg1.pkl' --start_random 0  --test_data_path 'saved_data/unsafe_id_mg_data_test_pcfg1.pkl'
 ```
-Similarly generate the datasets for other three PCFGs.
+
+For more details check run.sh. It generates the datasets for pre-training and fine-tuning.
 
 ### Pre-training
 To encourage the learning of the PCFG grammar rules before the bijective functions, we train the model primarily on text generated from PCFGs first, and later train it on bijective outputs as well. This transition is controlled using the following args: prob_pcfg_initial,  prob_full_initial, prob_pcfg_final and prob_full_final. To run the pre-training, follow the command below:
@@ -46,7 +47,7 @@ This repository supports three different safety fine-tuning protocols: supervise
 
 * Supervised safety fine-tuning (SSFT)
 ```
-CUDA_VISIBLE_DEVICES=0 python ./ssft/ssft.py  --grad_norm_clip 1.0 --model_load_path 'saved_pretrained/pretrained_model/model_100000.pkl'  --learning_rate 0.0001 --min_lr 0.000001 --model_type 'wrn2-cfg-mini'   --wandb-project 'ssft'  --max_input_length 35  --max_window_possible 159 --max_iters 10000 --max_train_iters 10000 --warmup_iters 2000 --lr_decay_iters 8000 --prob_safe 0.8 --prob_unsafe 0.2 --safe_branch_prob 0.5 --id_mg_prob 0.5  --save_path 'ssft_train' --wandb-run 'ssft_train'
+CUDA_VISIBLE_DEVICES=0 python ssft/ssft.py  --grad_norm_clip 1.0 --model_load_path 'saved_pretrained/pretrained_model/model_100000.pkl'  --learning_rate 0.0001 --min_lr 0.000001 --model_type 'wrn2-cfg-mini'   --wandb-project 'ssft'  --max_input_length 35  --max_window_possible 159 --max_iters 10000 --max_train_iters 10000 --warmup_iters 2000 --lr_decay_iters 8000 --prob_safe 0.8 --prob_unsafe 0.2 --safe_branch_prob 0.5 --id_mg_prob 0.5  --save_path 'ssft_train' --wandb-run 'ssft_train'
 ```
 
 * Direct Preference Opimization (DPO)
