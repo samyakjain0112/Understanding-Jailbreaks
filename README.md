@@ -34,7 +34,7 @@ CUDA_VISIBLE_DEVICES=0 python data_generator/make_data_safety_finetune_pcfg1.py 
 For more details check run.sh. It generates the datasets for pre-training and fine-tuning.
 
 ### Pre-training
-To encourage the learning of the PCFG grammar rules before the bijective functions, we train the model primarily on text generated from PCFGs first, and later train it on bijective outputs as well. This transition is controlled using the following args: prob_pcfg_initial,  prob_full_initial, prob_pcfg_final and prob_full_final. To run the pre-training, follow the command below:
+To encourage the learning of the PCFG grammar rules before the bijective functions, we train the model primarily on text generated from PCFGs first, and later train it on bijective outputs as well. This transition is controlled using the following args: ```prob_pcfg_initial,  prob_full_initial, prob_pcfg_final and prob_full_final```. To run the pre-training, follow the command below:
 
 ```
 CUDA_VISIBLE_DEVICES=0 python pretrain.py --learning_rate 0.001 --model_type 'wrn2-cfg-mini' --prob_pcfg_initial 0.5 --prob_full_initial 0.1 --prob_comp1_initial 0.2 --prob_comp2_initial 0.2  --prob_pcfg_final 0.1 --prob_full_final 0.2 --prob_comp1_final 0.3 --prob_comp2_final 0.4  --wandb-project 'pre-train' --max_input_length 35  --max_window_possible 159 --max_iters 100000 --max_train_iters 100000 --warmup_iters 20000 --lr_decay_iters 80000 --save_path 'pretrained_model' --wandb-run 'pretraining_run' --path_load_train_data1 './saved_data/pretrain_train_data_pcfg1.pkl' --path_load_train_data2 './saved_data/pretrain_train_data_pcfg2.pkl' --path_load_train_data3 './saved_data/pretrain_train_data_pcfg3.pkl' --path_load_train_data4 './saved_data/pretrain_train_data_pcfg4.pkl'   --path_load_val_data1 './saved_data/pretrain_train_data_pcfg1.pkl' --path_load_val_data2 './saved_data/pretrain_train_data_pcfg2.pkl' --path_load_val_data3 './saved_data/pretrain_train_data_pcfg3.pkl' --path_load_val_data4 './saved_data/pretrain_train_data_pcfg4.pkl'   --path_load_test_data1 './saved_data/pretrain_test_data_pcfg1.pkl' --path_load_test_data2 './saved_data/pretrain_test_data_pcfg2.pkl' --path_load_test_data3 './saved_data/pretrain_test_data_pcfg3.pkl' --path_load_test_data4 './saved_data/pretrain_test_data_pcfg4.pkl'
@@ -68,7 +68,8 @@ Use the ```data_test``` argument to define the test set. It takes the following 
 CUDA_VISIBLE_DEVICES=0 python evals/activation_space_analysis.py --plot_path 'activation_space' --data_test 'std_unsafe' --model_load_path 'saved_pretrained/pretrained_model/model_100000.pkl'  --model_type 'wrn2-cfg-mini'  --max_input_length 35  --max_window_possible 159 --max_iters 10000 --max_train_iters 10000  --save_path 'actiation_space'
 ```
 
-* The ```threat_count_adv``` arg is used to define the count of appended soft tokens. **Feature space analysis for adv attacks** (Fig. 7):
+* The ```threat_count_adv``` arg is used to define the count of appended soft tokens. 
+**Feature space analysis for adv attacks** (Fig. 7):
 ```
 CUDA_VISIBLE_DEVICES=0 python evals/activation_space_adv_analysis.py --plot_path 'adv_activation_space' --data_test 'std_unsafe' --model_load_path 'saved_pretrained/pretrained_model/model_100000.pkl'  --model_type 'wrn2-cfg-mini'  --max_input_length 35  --max_window_possible 159 --max_iters 10000 --max_train_iters 10000  --save_path 'adv_actiation_space' --threat_count_adv 2
 ```
@@ -93,6 +94,7 @@ Change ```model_load_path``` to load your desired model.
 
 ### Jupyter Notebook
 We have also provided a jupyter notebook  ```visualize.ipnyb``` to play around with the given checkpoints in ```/saved_models```.
+
 ## How to Cite
 
 Please cite the paper if you benefit from our paper or the repository:
