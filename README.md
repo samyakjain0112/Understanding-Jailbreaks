@@ -21,7 +21,7 @@ pip install -r requirements.txt
 
 ### Making the dataset
 
-To make the datasets used for pre-training run
+Make datasets for PCFGs 1, 2, 3 and 4. Change the ```sample_pcfg_number``` arg. make the datasets used for pre-training run
 
 ```
 python ./data_generator/make_data_pretrain.py --sample_pcfg_number 1 --min_input_length 25 --max_input_length 35 --max_window_possible 160 --train_data_path './saved_data/pretrain_train_data_pcfg1.pkl' --start_random 0  --test_data_path './saved_data/pretrain_test_data_pcfg1.pkl'
