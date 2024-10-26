@@ -364,13 +364,13 @@ class Trainer:
 
 
             if self.config.is_unlearn==1:
-                logits, self.loss_safe = model(x,y,mask,is_dpo=True)
+                logits, self.loss_safe = model(x,y,mask,reduction=True)
                 self.loss_safe = torch.mul(torch.reshape(self.loss_safe, [y.shape[0], y.shape[1]]), dummy_mask_safe)
 
                 shape_value = self.loss_safe.shape[-1]
                 self.loss_safe = torch.sum(self.loss_safe, dim=-1)/shape_value
 
-                logits_unsafe, self.loss_unsafe = model(x_ex,y_ex,mask,is_dpo=True)
+                logits_unsafe, self.loss_unsafe = model(x_ex,y_ex,mask,reduction=True)
                 self.loss_unsafe = torch.mul(torch.reshape(self.loss_unsafe, [y.shape[0], y.shape[1]]), dummy_mask_unsafe)
                 
                 shape_value = self.loss_unsafe.shape[-1]
