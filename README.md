@@ -60,12 +60,17 @@ python unlearn/unlearn.py  --grad_norm_clip 1.0 --model_load_path 'saved_pretrai
 ```
 
 ### Evaluations
+Use the ```data_test``` argument to decide the test set. It takes values of the following format ```{attack_name}_{branch_name}```. The posisble values are: 'std_unsafe', 'std_safe', 'mg_tokens', 'mg_txt', 'if_text_safe', 'if_text_unsafe', 'if_text_safe', 'if_txt'
 
 * For analyzing the the feature space, similar to Fig.3 run
+```
+python evals/activation_space_analysis.py --plot_path 'pretrained_model' --data_test 'std_unsafe' --model_load_path 'saved_pretrained/pretrained_model model_100000.pkl'  --model_type 'wrn2-cfg-mini'  --max_input_length 35  --max_window_possible 159 --max_iters 10000 --max_train_iters 10000  --save_path 'actiation_space'
+```
 
-
-* For feature space analysis on performing adversarial attacks, run
-
+* The ```threat_count_adv``` argument is used to define the count of appended soft tokens. To feature space analysis using adversarial attacks, run
+```
+python evals/activation_space_adv_analysis.py --plot_path 'pretrained_model' --data_test 'std_unsafe' --model_load_path 'saved_pretrained/pretrained_model model_100000.pkl'  --model_type 'wrn2-cfg-mini'  --max_input_length 35  --max_window_possible 159 --max_iters 10000 --max_train_iters 10000  --save_path 'adv_actiation_space' --threat_count_adv 2
+```
 
 * For analyzing the column space of the learned update, similar to Fig.4 run
 

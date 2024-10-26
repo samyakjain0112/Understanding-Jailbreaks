@@ -45,9 +45,6 @@ parser.add_argument('--log_iters', default=100, type=int)
 parser.add_argument('--max_train_iters', default=10000, type=int)
 parser.add_argument('--max_val_iters', default=100, type=int)
 parser.add_argument('--max_test_iters', default=250, type=int)
-parser.add_argument('--is_dpo', default=0, type=int)
-parser.add_argument('--dpo_weight_safe', default=0, type=float)
-parser.add_argument('--dpo_weight_unsafe', default=0, type=float)
 
 
 parser.add_argument('--num_samples_train', default=1000, type=int)
@@ -200,8 +197,6 @@ parser.add_argument('--path_load_val_data4_id_mg', type=str, default='./saved_da
 parser.add_argument('--path_load_test_data4_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_repeat_10_35length_pcfg4_mod_new_toy.pkl')
 
 parser.add_argument('--train_type', type=str, default='adv', choices=['filter', 'adv'])
-parser.add_argument('--prob_safe', type=float, default=0.2)
-parser.add_argument('--prob_unsafe', type=float, default=0.8)
 parser.add_argument('--path_model', type=str, default='./model_5_mod_new_toy.pkl')
 
 parser.add_argument('--save_path', type=str, default='./finetune_debug')

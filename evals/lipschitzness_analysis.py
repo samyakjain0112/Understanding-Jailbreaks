@@ -45,9 +45,6 @@ parser.add_argument('--log_iters', default=100, type=int)
 parser.add_argument('--max_train_iters', default=10000, type=int)
 parser.add_argument('--max_val_iters', default=100, type=int)
 parser.add_argument('--max_test_iters', default=250, type=int)
-parser.add_argument('--is_dpo', default=0, type=int)
-parser.add_argument('--dpo_weight_safe', default=0, type=float)
-parser.add_argument('--dpo_weight_unsafe', default=0, type=float)
 
 
 parser.add_argument('--num_samples_train', default=1000, type=int)
