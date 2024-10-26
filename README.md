@@ -69,6 +69,7 @@ CUDA_VISIBLE_DEVICES=0 python evals/activation_space_analysis.py --plot_path 'ac
 ```
 
 * The ```threat_count_adv``` arg is used to define the count of appended soft tokens. 
+
 **Feature space analysis for adv attacks** (Fig. 7):
 ```
 CUDA_VISIBLE_DEVICES=0 python evals/activation_space_adv_analysis.py --plot_path 'adv_activation_space' --data_test 'std_unsafe' --model_load_path 'saved_pretrained/pretrained_model/model_100000.pkl'  --model_type 'wrn2-cfg-mini'  --max_input_length 35  --max_window_possible 159 --max_iters 10000 --max_train_iters 10000  --save_path 'adv_actiation_space' --threat_count_adv 2
