@@ -1,3 +1,5 @@
+import sys
+sys.path.append("/datadrive/samyak/testing/Understanding-Jailbreaks")
 from model_row_space import GPT
 import pickle 
 import numpy as np
@@ -11,7 +13,6 @@ from torch.utils.data.dataloader import DataLoader
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 
-parser = argparse.ArgumentParser(description='PyTorch GPT Training')
 
 parser = argparse.ArgumentParser(description='PyTorch DGP')
 parser.add_argument('--BOS_token', default="$", type=str)
@@ -91,108 +92,108 @@ parser.add_argument('--data_inst_fl_direct', default=False, type=bool)
 parser.add_argument('--data_inst_fl_comp', default=False, type=bool)
 parser.add_argument('--perform_co', default=False, type=bool)
 
-parser.add_argument('--path_load_train_data1_safe', type=str, default='./saved_data/safe_data_train_repeat_10_35length_pcfg1_mod_new_toy.pkl')
-parser.add_argument('--path_load_val_data1_safe', type=str, default='./saved_data/safe_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data1_safe', type=str, default='./saved_data/safe_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
+parser.add_argument('--path_load_train_data1_safe', type=str, default='./saved_data/safe_data_train_pcfg1.pkl')
+parser.add_argument('--path_load_val_data1_safe', type=str, default='./saved_data/safe_data_test_pcfg1.pkl')
+parser.add_argument('--path_load_test_data1_safe', type=str, default='./saved_data/safe_data_test_pcfg1.pkl')
 
-parser.add_argument('--path_load_train_data2_safe', type=str, default='./saved_data/safe_data_train_repeat_10_35length_pcfg2_mod_new_toy.pkl')
-parser.add_argument('--path_load_val_data2_safe', type=str, default='./saved_data/safe_data_test_repeat_10_35length_pcfg2_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data2_safe', type=str, default='./saved_data/safe_data_test_repeat_10_35length_pcfg2_mod_new_toy.pkl')
+parser.add_argument('--path_load_train_data2_safe', type=str, default='./saved_data/safe_data_train_pcfg2.pkl')
+parser.add_argument('--path_load_val_data2_safe', type=str, default='./saved_data/safe_data_test_pcfg2.pkl')
+parser.add_argument('--path_load_test_data2_safe', type=str, default='./saved_data/safe_data_test_pcfg2.pkl')
 
-parser.add_argument('--path_load_train_data3_safe', type=str, default='./saved_data/safe_data_train_repeat_10_35length_pcfg3_mod_new_toy.pkl')
-parser.add_argument('--path_load_val_data3_safe', type=str, default='./saved_data/safe_data_test_repeat_10_35length_pcfg3_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data3_safe', type=str, default='./saved_data/safe_data_test_repeat_10_35length_pcfg3_mod_new_toy.pkl')
+parser.add_argument('--path_load_train_data3_safe', type=str, default='./saved_data/safe_data_train_pcfg3.pkl')
+parser.add_argument('--path_load_val_data3_safe', type=str, default='./saved_data/safe_data_test_pcfg3.pkl')
+parser.add_argument('--path_load_test_data3_safe', type=str, default='./saved_data/safe_data_test_pcfg3.pkl')
 
-parser.add_argument('--path_load_train_data4_safe', type=str, default='./saved_data/safe_data_train_repeat_10_35length_pcfg4_mod_new_toy.pkl')
-parser.add_argument('--path_load_val_data4_safe', type=str, default='./saved_data/safe_data_test_repeat_10_35length_pcfg4_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data4_safe', type=str, default='./saved_data/safe_data_test_repeat_10_35length_pcfg4_mod_new_toy.pkl')
+parser.add_argument('--path_load_train_data4_safe', type=str, default='./saved_data/safe_data_train_pcfg4.pkl')
+parser.add_argument('--path_load_val_data4_safe', type=str, default='./saved_data/safe_data_test_pcfg4.pkl')
+parser.add_argument('--path_load_test_data4_safe', type=str, default='./saved_data/safe_data_test_pcfg4.pkl')
 
 
 
 parser.add_argument('--path_load_train_data1_unsafe', type=str, default='')
-parser.add_argument('--path_load_val_data1_unsafe', type=str, default='./saved_data/unsafe_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data1_unsafe', type=str, default='./saved_data/unsafe_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
+parser.add_argument('--path_load_val_data1_unsafe', type=str, default='./saved_data/unsafe_data_test_pcfg1.pkl')
+parser.add_argument('--path_load_test_data1_unsafe', type=str, default='./saved_data/unsafe_data_test_pcfg1.pkl')
 
 parser.add_argument('--path_load_train_data2_unsafe', type=str, default='')
-parser.add_argument('--path_load_val_data2_unsafe', type=str, default='./saved_data/unsafe_data_test_repeat_10_35length_pcfg2_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data2_unsafe', type=str, default='./saved_data/unsafe_data_test_repeat_10_35length_pcfg2_mod_new_toy.pkl')
+parser.add_argument('--path_load_val_data2_unsafe', type=str, default='./saved_data/unsafe_data_test_pcfg2.pkl')
+parser.add_argument('--path_load_test_data2_unsafe', type=str, default='./saved_data/unsafe_data_test_pcfg2.pkl')
 
 parser.add_argument('--path_load_train_data3_unsafe', type=str, default='')
-parser.add_argument('--path_load_val_data3_unsafe', type=str, default='./saved_data/unsafe_data_test_repeat_10_35length_pcfg3_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data3_unsafe', type=str, default='./saved_data/unsafe_data_test_repeat_10_35length_pcfg3_mod_new_toy.pkl')
+parser.add_argument('--path_load_val_data3_unsafe', type=str, default='./saved_data/unsafe_data_test_pcfg3.pkl')
+parser.add_argument('--path_load_test_data3_unsafe', type=str, default='./saved_data/unsafe_data_test_pcfg3.pkl')
 
 parser.add_argument('--path_load_train_data4_unsafe', type=str, default='')
-parser.add_argument('--path_load_val_data4_unsafe', type=str, default='./saved_data/unsafe_data_test_repeat_10_35length_pcfg4_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data4_unsafe', type=str, default='./saved_data/unsafe_data_test_repeat_10_35length_pcfg4_mod_new_toy.pkl')
+parser.add_argument('--path_load_val_data4_unsafe', type=str, default='./saved_data/unsafe_data_test_pcfg4.pkl')
+parser.add_argument('--path_load_test_data4_unsafe', type=str, default='./saved_data/unsafe_data_test_pcfg4.pkl')
 
 
 parser.add_argument('--path_load_train_data1_intermediate', type=str, default='')
-parser.add_argument('--path_load_val_data1_intermediate', type=str, default='./saved_data/intermediate_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data1_intermediate', type=str, default='./saved_data/intermediate_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
+parser.add_argument('--path_load_val_data1_intermediate', type=str, default='./saved_data/intermediate_data_test_pcfg1.pkl')
+parser.add_argument('--path_load_test_data1_intermediate', type=str, default='./saved_data/intermediate_data_test_pcfg1.pkl')
 
 parser.add_argument('--path_load_train_data2_intermediate', type=str, default='')
-parser.add_argument('--path_load_val_data2_intermediate', type=str, default='./saved_data/intermediate_data_test_repeat_10_35length_pcfg2_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data2_intermediate', type=str, default='./saved_data/intermediate_data_test_repeat_10_35length_pcfg2_mod_new_toy.pkl')
+parser.add_argument('--path_load_val_data2_intermediate', type=str, default='./saved_data/intermediate_data_test_pcfg2.pkl')
+parser.add_argument('--path_load_test_data2_intermediate', type=str, default='./saved_data/intermediate_data_test_pcfg2.pkl')
 
 parser.add_argument('--path_load_train_data3_intermediate', type=str, default='')
-parser.add_argument('--path_load_val_data3_intermediate', type=str, default='./saved_data/intermediate_data_test_repeat_10_35length_pcfg3_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data3_intermediate', type=str, default='./saved_data/intermediate_data_test_repeat_10_35length_pcfg3_mod_new_toy.pkl')
+parser.add_argument('--path_load_val_data3_intermediate', type=str, default='./saved_data/intermediate_data_test_pcfg3.pkl')
+parser.add_argument('--path_load_test_data3_intermediate', type=str, default='./saved_data/intermediate_data_test_pcfg3.pkl')
 
 parser.add_argument('--path_load_train_data4_intermediate', type=str, default='')
-parser.add_argument('--path_load_val_data4_intermediate', type=str, default='./saved_data/intermediate_data_test_repeat_10_35length_pcfg4_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data4_intermediate', type=str, default='./saved_data/intermediate_data_test_repeat_10_35length_pcfg4_mod_new_toy.pkl')
+parser.add_argument('--path_load_val_data4_intermediate', type=str, default='./saved_data/intermediate_data_test_pcfg4.pkl')
+parser.add_argument('--path_load_test_data4_intermediate', type=str, default='./saved_data/intermediate_data_test_pcfg4.pkl')
 
 
 parser.add_argument('--path_load_train_data1_duplicate', type=str, default='')
-parser.add_argument('--path_load_val_data1_duplicate', type=str, default='./saved_data/duplicates_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data1_duplicate', type=str, default='./saved_data/duplicates_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
+parser.add_argument('--path_load_val_data1_duplicate', type=str, default='./saved_data/duplicates_data_test_pcfg1.pkl')
+parser.add_argument('--path_load_test_data1_duplicate', type=str, default='./saved_data/duplicates_data_test_pcfg1.pkl')
 
 parser.add_argument('--path_load_train_data2_duplicate', type=str, default='')
-parser.add_argument('--path_load_val_data2_duplicate', type=str, default='./saved_data/duplicates_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data2_duplicate', type=str, default='./saved_data/duplicates_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
+parser.add_argument('--path_load_val_data2_duplicate', type=str, default='./saved_data/duplicates_data_test_pcfg1.pkl')
+parser.add_argument('--path_load_test_data2_duplicate', type=str, default='./saved_data/duplicates_data_test_pcfg1.pkl')
 
 parser.add_argument('--path_load_train_data3_duplicate', type=str, default='')
-parser.add_argument('--path_load_val_data3_duplicate', type=str, default='./saved_data/duplicates_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data3_duplicate', type=str, default='./saved_data/duplicates_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
+parser.add_argument('--path_load_val_data3_duplicate', type=str, default='./saved_data/duplicates_data_test_pcfg1.pkl')
+parser.add_argument('--path_load_test_data3_duplicate', type=str, default='./saved_data/duplicates_data_test_pcfg1.pkl')
 
 parser.add_argument('--path_load_train_data4_duplicate', type=str, default='')
-parser.add_argument('--path_load_val_data4_duplicate', type=str, default='./saved_data/duplicates_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data4_duplicate', type=str, default='./saved_data/duplicates_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
+parser.add_argument('--path_load_val_data4_duplicate', type=str, default='./saved_data/duplicates_data_test_pcfg1.pkl')
+parser.add_argument('--path_load_test_data4_duplicate', type=str, default='./saved_data/duplicates_data_test_pcfg1.pkl')
 
 
 
 parser.add_argument('--path_load_train_data1_ood_mg', type=str, default='')
-parser.add_argument('--path_load_val_data1_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data1_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
+parser.add_argument('--path_load_val_data1_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_pcfg1.pkl')
+parser.add_argument('--path_load_test_data1_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_pcfg1.pkl')
 
 parser.add_argument('--path_load_train_data2_ood_mg', type=str, default='')
-parser.add_argument('--path_load_val_data2_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_repeat_10_35length_pcfg2_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data2_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_repeat_10_35length_pcfg2_mod_new_toy.pkl')
+parser.add_argument('--path_load_val_data2_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_pcfg2.pkl')
+parser.add_argument('--path_load_test_data2_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_pcfg2.pkl')
 
 parser.add_argument('--path_load_train_data3_ood_mg', type=str, default='')
-parser.add_argument('--path_load_val_data3_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_repeat_10_35length_pcfg3_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data3_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_repeat_10_35length_pcfg3_mod_new_toy.pkl')
+parser.add_argument('--path_load_val_data3_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_pcfg3.pkl')
+parser.add_argument('--path_load_test_data3_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_pcfg3.pkl')
 
 parser.add_argument('--path_load_train_data4_ood_mg', type=str, default='')
-parser.add_argument('--path_load_val_data4_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_repeat_10_35length_pcfg4_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data4_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_repeat_10_35length_pcfg4_mod_new_toy.pkl')
+parser.add_argument('--path_load_val_data4_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_pcfg4.pkl')
+parser.add_argument('--path_load_test_data4_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_pcfg4.pkl')
 
 
-parser.add_argument('--path_load_train_data1_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_train_repeat_10_35length_pcfg1_mod_new_toy.pkl')
-parser.add_argument('--path_load_val_data1_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data1_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
+parser.add_argument('--path_load_train_data1_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_train_pcfg1.pkl')
+parser.add_argument('--path_load_val_data1_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_pcfg1.pkl')
+parser.add_argument('--path_load_test_data1_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_pcfg1.pkl')
 
-parser.add_argument('--path_load_train_data2_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_train_repeat_10_35length_pcfg2_mod_new_toy.pkl')
-parser.add_argument('--path_load_val_data2_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_repeat_10_35length_pcfg2_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data2_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_repeat_10_35length_pcfg2_mod_new_toy.pkl')
+parser.add_argument('--path_load_train_data2_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_train_pcfg2.pkl')
+parser.add_argument('--path_load_val_data2_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_pcfg2.pkl')
+parser.add_argument('--path_load_test_data2_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_pcfg2.pkl')
 
-parser.add_argument('--path_load_train_data3_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_train_repeat_10_35length_pcfg3_mod_new_toy.pkl')
-parser.add_argument('--path_load_val_data3_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_repeat_10_35length_pcfg3_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data3_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_repeat_10_35length_pcfg3_mod_new_toy.pkl')
+parser.add_argument('--path_load_train_data3_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_train_pcfg3.pkl')
+parser.add_argument('--path_load_val_data3_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_pcfg3.pkl')
+parser.add_argument('--path_load_test_data3_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_pcfg3.pkl')
 
-parser.add_argument('--path_load_train_data4_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_train_repeat_10_35length_pcfg4_mod_new_toy.pkl')
-parser.add_argument('--path_load_val_data4_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_repeat_10_35length_pcfg4_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data4_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_repeat_10_35length_pcfg4_mod_new_toy.pkl')
+parser.add_argument('--path_load_train_data4_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_train_pcfg4.pkl')
+parser.add_argument('--path_load_val_data4_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_pcfg4.pkl')
+parser.add_argument('--path_load_test_data4_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_pcfg4.pkl')
 
 parser.add_argument('--prob_safe', type=float, default=0.2)
 parser.add_argument('--prob_unsafe', type=float, default=0.8)
@@ -201,7 +202,7 @@ parser.add_argument('--path_model', type=str, default='./model_50000_mod_new_toy
 parser.add_argument('--save_path', type=str, default='./finetune_debug')
 parser.add_argument('--model_load_path', type=str, default='pretrained_models_new/model_mini_spec_100k_pcfg_10C_35L_30alph_pcfg_0p5_0p1_comp1_0p2_0p3_comp2_0p2_0p4_new/model_100000.pkl')
 parser.add_argument('--optimizer_load_path', type=str, default='')
-parser.add_argument('--model_load_path2', type=str, default='pretrained_models_new/model_mini_spec_100k_pcfg_10C_35L_30alph_pcfg_0p5_0p1_comp1_0p2_0p3_comp2_0p2_0p4_new_new/model_100000.pkl')
+parser.add_argument('--model2_load_path', type=str, default='pretrained_models_new/model_mini_spec_100k_pcfg_10C_35L_30alph_pcfg_0p5_0p1_comp1_0p2_0p3_comp2_0p2_0p4_new_new/model_100000.pkl')
 
 parser.add_argument('--n_emb_value', default=192, type=int)
 parser.add_argument('--num_repeats', default=6, type=int)
@@ -227,8 +228,8 @@ parser.add_argument('--prob_comp2_final', default=0.2, type=float)
 
 args = parser.parse_args()
 
-if not os.path.exists("plots_row_space/" +  args.plot_path + '_' + args.data_test):
-    os.makedirs("plots_row_space/" +  args.plot_path + '_' +  args.data_test )
+if not os.path.exists("plots_row_space/" +  args.plot_path):
+    os.makedirs("plots_row_space/" +  args.plot_path)
 
 
 class DGP_sample():
@@ -1681,10 +1682,10 @@ model_config2.block_size = train_dataset.allowed_max_window_length
 
 if args.is_dataparallel==1:
     model2 = torch.nn.DataParallel(GPT(train_dataset.tokenizer, model_config2)).cuda()
-    model2.load_state_dict(torch.load(args.model_load_path2))
+    model2.load_state_dict(torch.load(args.model2_load_path))
 else:
     model2 = GPT(train_dataset.tokenizer, model_config2).cuda()
-    model2.load_state_dict(torch.load(args.model_load_path2))
+    model2.load_state_dict(torch.load(args.model2_load_path))
 model2.eval()
 model.eval()
 
@@ -1927,8 +1928,8 @@ for layer_num in range(num_layers):
         input_val = layer_num
         id=0
 
-    np.save("plots_row_space/"+ args.plot_path+"_unsafe_{}".format(layer_num)+"_"+ args.data_test+ ".npy", np.array(lst_index))
-    np.save("plots_row_space/"+ args.plot_path+"_safe_{}".format(layer_num)+"_"+ args.data_test+ ".npy", np.array(lst_index_safe))
+    np.save("plots_row_space/"+ args.plot_path+"/unsafe_{}".format(layer_num)+"_"+ args.data_test+ ".npy", np.array(lst_index))
+    np.save("plots_row_space/"+ args.plot_path+"/safe_{}".format(layer_num)+"_"+ args.data_test+ ".npy", np.array(lst_index_safe))
     
-plt.savefig("./plots_row_space/" + args.plot_path + '_hist_' + args.data_test + "_AM.pdf")
+plt.savefig("./plots_row_space/" + args.plot_path + '/hist_' + args.data_test + ".pdf")
 plt.close('all')

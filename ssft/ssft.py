@@ -1,3 +1,5 @@
+import sys
+sys.path.append("../")
 from model import GPT
 from trainer_ssft import Trainer
 import pickle 

@@ -1,3 +1,5 @@
+import sys
+sys.path.append("/datadrive/samyak/testing/Understanding-Jailbreaks")
 from model_activation_space import GPT
 import pickle 
 import numpy as np
@@ -11,8 +13,6 @@ import math
 from torch.utils.data.dataloader import DataLoader
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-
-parser = argparse.ArgumentParser(description='PyTorch GPT Training')
 
 parser = argparse.ArgumentParser(description='PyTorch DGP')
 parser.add_argument('--BOS_token', default="$", type=str)
@@ -93,111 +93,111 @@ parser.add_argument('--perform_co', default=False, type=bool)
 parser.add_argument('--univ_adv', default=True, type=bool)
 
 
-parser.add_argument('--path_load_train_data1_safe', type=str, default='./saved_data/safe_data_train_repeat_10_35length_pcfg1_mod_new_toy.pkl')
-parser.add_argument('--path_load_val_data1_safe', type=str, default='./saved_data/safe_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data1_safe', type=str, default='./saved_data/safe_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
+parser.add_argument('--path_load_train_data1_safe', type=str, default='./saved_data/safe_data_train_pcfg1.pkl')
+parser.add_argument('--path_load_val_data1_safe', type=str, default='./saved_data/safe_data_test_pcfg1.pkl')
+parser.add_argument('--path_load_test_data1_safe', type=str, default='./saved_data/safe_data_test_pcfg1.pkl')
 
-parser.add_argument('--path_load_train_data2_safe', type=str, default='./saved_data/safe_data_train_repeat_10_35length_pcfg2_mod_new_toy.pkl')
-parser.add_argument('--path_load_val_data2_safe', type=str, default='./saved_data/safe_data_test_repeat_10_35length_pcfg2_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data2_safe', type=str, default='./saved_data/safe_data_test_repeat_10_35length_pcfg2_mod_new_toy.pkl')
+parser.add_argument('--path_load_train_data2_safe', type=str, default='./saved_data/safe_data_train_pcfg2.pkl')
+parser.add_argument('--path_load_val_data2_safe', type=str, default='./saved_data/safe_data_test_pcfg2.pkl')
+parser.add_argument('--path_load_test_data2_safe', type=str, default='./saved_data/safe_data_test_pcfg2.pkl')
 
-parser.add_argument('--path_load_train_data3_safe', type=str, default='./saved_data/safe_data_train_repeat_10_35length_pcfg3_mod_new_toy.pkl')
-parser.add_argument('--path_load_val_data3_safe', type=str, default='./saved_data/safe_data_test_repeat_10_35length_pcfg3_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data3_safe', type=str, default='./saved_data/safe_data_test_repeat_10_35length_pcfg3_mod_new_toy.pkl')
+parser.add_argument('--path_load_train_data3_safe', type=str, default='./saved_data/safe_data_train_pcfg3.pkl')
+parser.add_argument('--path_load_val_data3_safe', type=str, default='./saved_data/safe_data_test_pcfg3.pkl')
+parser.add_argument('--path_load_test_data3_safe', type=str, default='./saved_data/safe_data_test_pcfg3.pkl')
 
-parser.add_argument('--path_load_train_data4_safe', type=str, default='./saved_data/safe_data_train_repeat_10_35length_pcfg4_mod_new_toy.pkl')
-parser.add_argument('--path_load_val_data4_safe', type=str, default='./saved_data/safe_data_test_repeat_10_35length_pcfg4_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data4_safe', type=str, default='./saved_data/safe_data_test_repeat_10_35length_pcfg4_mod_new_toy.pkl')
+parser.add_argument('--path_load_train_data4_safe', type=str, default='./saved_data/safe_data_train_pcfg4.pkl')
+parser.add_argument('--path_load_val_data4_safe', type=str, default='./saved_data/safe_data_test_pcfg4.pkl')
+parser.add_argument('--path_load_test_data4_safe', type=str, default='./saved_data/safe_data_test_pcfg4.pkl')
 
 
 
 parser.add_argument('--path_load_train_data1_unsafe', type=str, default='')
-parser.add_argument('--path_load_val_data1_unsafe', type=str, default='./saved_data/unsafe_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data1_unsafe', type=str, default='./saved_data/unsafe_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
+parser.add_argument('--path_load_val_data1_unsafe', type=str, default='./saved_data/unsafe_data_test_pcfg1.pkl')
+parser.add_argument('--path_load_test_data1_unsafe', type=str, default='./saved_data/unsafe_data_test_pcfg1.pkl')
 
 parser.add_argument('--path_load_train_data2_unsafe', type=str, default='')
-parser.add_argument('--path_load_val_data2_unsafe', type=str, default='./saved_data/unsafe_data_test_repeat_10_35length_pcfg2_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data2_unsafe', type=str, default='./saved_data/unsafe_data_test_repeat_10_35length_pcfg2_mod_new_toy.pkl')
+parser.add_argument('--path_load_val_data2_unsafe', type=str, default='./saved_data/unsafe_data_test_pcfg2.pkl')
+parser.add_argument('--path_load_test_data2_unsafe', type=str, default='./saved_data/unsafe_data_test_pcfg2.pkl')
 
 parser.add_argument('--path_load_train_data3_unsafe', type=str, default='')
-parser.add_argument('--path_load_val_data3_unsafe', type=str, default='./saved_data/unsafe_data_test_repeat_10_35length_pcfg3_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data3_unsafe', type=str, default='./saved_data/unsafe_data_test_repeat_10_35length_pcfg3_mod_new_toy.pkl')
+parser.add_argument('--path_load_val_data3_unsafe', type=str, default='./saved_data/unsafe_data_test_pcfg3.pkl')
+parser.add_argument('--path_load_test_data3_unsafe', type=str, default='./saved_data/unsafe_data_test_pcfg3.pkl')
 
 parser.add_argument('--path_load_train_data4_unsafe', type=str, default='')
-parser.add_argument('--path_load_val_data4_unsafe', type=str, default='./saved_data/unsafe_data_test_repeat_10_35length_pcfg4_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data4_unsafe', type=str, default='./saved_data/unsafe_data_test_repeat_10_35length_pcfg4_mod_new_toy.pkl')
+parser.add_argument('--path_load_val_data4_unsafe', type=str, default='./saved_data/unsafe_data_test_pcfg4.pkl')
+parser.add_argument('--path_load_test_data4_unsafe', type=str, default='./saved_data/unsafe_data_test_pcfg4.pkl')
 
 
 parser.add_argument('--path_load_train_data1_intermediate', type=str, default='')
-parser.add_argument('--path_load_val_data1_intermediate', type=str, default='./saved_data/intermediate_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data1_intermediate', type=str, default='./saved_data/intermediate_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
+parser.add_argument('--path_load_val_data1_intermediate', type=str, default='./saved_data/intermediate_data_test_pcfg1.pkl')
+parser.add_argument('--path_load_test_data1_intermediate', type=str, default='./saved_data/intermediate_data_test_pcfg1.pkl')
 
 parser.add_argument('--path_load_train_data2_intermediate', type=str, default='')
-parser.add_argument('--path_load_val_data2_intermediate', type=str, default='./saved_data/intermediate_data_test_repeat_10_35length_pcfg2_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data2_intermediate', type=str, default='./saved_data/intermediate_data_test_repeat_10_35length_pcfg2_mod_new_toy.pkl')
+parser.add_argument('--path_load_val_data2_intermediate', type=str, default='./saved_data/intermediate_data_test_pcfg2.pkl')
+parser.add_argument('--path_load_test_data2_intermediate', type=str, default='./saved_data/intermediate_data_test_pcfg2.pkl')
 
 parser.add_argument('--path_load_train_data3_intermediate', type=str, default='')
-parser.add_argument('--path_load_val_data3_intermediate', type=str, default='./saved_data/intermediate_data_test_repeat_10_35length_pcfg3_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data3_intermediate', type=str, default='./saved_data/intermediate_data_test_repeat_10_35length_pcfg3_mod_new_toy.pkl')
+parser.add_argument('--path_load_val_data3_intermediate', type=str, default='./saved_data/intermediate_data_test_pcfg3.pkl')
+parser.add_argument('--path_load_test_data3_intermediate', type=str, default='./saved_data/intermediate_data_test_pcfg3.pkl')
 
 parser.add_argument('--path_load_train_data4_intermediate', type=str, default='')
-parser.add_argument('--path_load_val_data4_intermediate', type=str, default='./saved_data/intermediate_data_test_repeat_10_35length_pcfg4_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data4_intermediate', type=str, default='./saved_data/intermediate_data_test_repeat_10_35length_pcfg4_mod_new_toy.pkl')
+parser.add_argument('--path_load_val_data4_intermediate', type=str, default='./saved_data/intermediate_data_test_pcfg4.pkl')
+parser.add_argument('--path_load_test_data4_intermediate', type=str, default='./saved_data/intermediate_data_test_pcfg4.pkl')
 
 
 parser.add_argument('--path_load_train_data1_duplicate', type=str, default='')
-parser.add_argument('--path_load_val_data1_duplicate', type=str, default='./saved_data/duplicates_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data1_duplicate', type=str, default='./saved_data/duplicates_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
+parser.add_argument('--path_load_val_data1_duplicate', type=str, default='./saved_data/duplicates_data_test_pcfg1.pkl')
+parser.add_argument('--path_load_test_data1_duplicate', type=str, default='./saved_data/duplicates_data_test_pcfg1.pkl')
 
 parser.add_argument('--path_load_train_data2_duplicate', type=str, default='')
-parser.add_argument('--path_load_val_data2_duplicate', type=str, default='./saved_data/duplicates_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data2_duplicate', type=str, default='./saved_data/duplicates_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
+parser.add_argument('--path_load_val_data2_duplicate', type=str, default='./saved_data/duplicates_data_test_pcfg1.pkl')
+parser.add_argument('--path_load_test_data2_duplicate', type=str, default='./saved_data/duplicates_data_test_pcfg1.pkl')
 
 parser.add_argument('--path_load_train_data3_duplicate', type=str, default='')
-parser.add_argument('--path_load_val_data3_duplicate', type=str, default='./saved_data/duplicates_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data3_duplicate', type=str, default='./saved_data/duplicates_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
+parser.add_argument('--path_load_val_data3_duplicate', type=str, default='./saved_data/duplicates_data_test_pcfg1.pkl')
+parser.add_argument('--path_load_test_data3_duplicate', type=str, default='./saved_data/duplicates_data_test_pcfg1.pkl')
 
 parser.add_argument('--path_load_train_data4_duplicate', type=str, default='')
-parser.add_argument('--path_load_val_data4_duplicate', type=str, default='./saved_data/duplicates_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data4_duplicate', type=str, default='./saved_data/duplicates_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
+parser.add_argument('--path_load_val_data4_duplicate', type=str, default='./saved_data/duplicates_data_test_pcfg1.pkl')
+parser.add_argument('--path_load_test_data4_duplicate', type=str, default='./saved_data/duplicates_data_test_pcfg1.pkl')
 
 
 
 parser.add_argument('--path_load_train_data1_ood_mg', type=str, default='')
-parser.add_argument('--path_load_val_data1_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data1_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
+parser.add_argument('--path_load_val_data1_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_pcfg1.pkl')
+parser.add_argument('--path_load_test_data1_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_pcfg1.pkl')
 
 parser.add_argument('--path_load_train_data2_ood_mg', type=str, default='')
-parser.add_argument('--path_load_val_data2_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_repeat_10_35length_pcfg2_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data2_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_repeat_10_35length_pcfg2_mod_new_toy.pkl')
+parser.add_argument('--path_load_val_data2_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_pcfg2.pkl')
+parser.add_argument('--path_load_test_data2_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_pcfg2.pkl')
 
 parser.add_argument('--path_load_train_data3_ood_mg', type=str, default='')
-parser.add_argument('--path_load_val_data3_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_repeat_10_35length_pcfg3_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data3_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_repeat_10_35length_pcfg3_mod_new_toy.pkl')
+parser.add_argument('--path_load_val_data3_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_pcfg3.pkl')
+parser.add_argument('--path_load_test_data3_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_pcfg3.pkl')
 
 parser.add_argument('--path_load_train_data4_ood_mg', type=str, default='')
-parser.add_argument('--path_load_val_data4_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_repeat_10_35length_pcfg4_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data4_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_repeat_10_35length_pcfg4_mod_new_toy.pkl')
+parser.add_argument('--path_load_val_data4_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_pcfg4.pkl')
+parser.add_argument('--path_load_test_data4_ood_mg', type=str, default='./saved_data/unsafe_ood_mg_data_test_pcfg4.pkl')
 
 
-parser.add_argument('--path_load_train_data1_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_train_repeat_10_35length_pcfg1_mod_new_toy.pkl')
-parser.add_argument('--path_load_val_data1_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data1_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_repeat_10_35length_pcfg1_mod_new_toy.pkl')
+parser.add_argument('--path_load_train_data1_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_train_pcfg1.pkl')
+parser.add_argument('--path_load_val_data1_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_pcfg1.pkl')
+parser.add_argument('--path_load_test_data1_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_pcfg1.pkl')
 
-parser.add_argument('--path_load_train_data2_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_train_repeat_10_35length_pcfg2_mod_new_toy.pkl')
-parser.add_argument('--path_load_val_data2_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_repeat_10_35length_pcfg2_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data2_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_repeat_10_35length_pcfg2_mod_new_toy.pkl')
+parser.add_argument('--path_load_train_data2_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_train_pcfg2.pkl')
+parser.add_argument('--path_load_val_data2_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_pcfg2.pkl')
+parser.add_argument('--path_load_test_data2_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_pcfg2.pkl')
 
-parser.add_argument('--path_load_train_data3_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_train_repeat_10_35length_pcfg3_mod_new_toy.pkl')
-parser.add_argument('--path_load_val_data3_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_repeat_10_35length_pcfg3_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data3_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_repeat_10_35length_pcfg3_mod_new_toy.pkl')
+parser.add_argument('--path_load_train_data3_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_train_pcfg3.pkl')
+parser.add_argument('--path_load_val_data3_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_pcfg3.pkl')
+parser.add_argument('--path_load_test_data3_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_pcfg3.pkl')
 
-parser.add_argument('--path_load_train_data4_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_train_repeat_10_35length_pcfg4_mod_new_toy.pkl')
-parser.add_argument('--path_load_val_data4_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_repeat_10_35length_pcfg4_mod_new_toy.pkl')
-parser.add_argument('--path_load_test_data4_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_repeat_10_35length_pcfg4_mod_new_toy.pkl')
+parser.add_argument('--path_load_train_data4_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_train_pcfg4.pkl')
+parser.add_argument('--path_load_val_data4_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_pcfg4.pkl')
+parser.add_argument('--path_load_test_data4_id_mg', type=str, default='./saved_data/unsafe_id_mg_data_test_pcfg4.pkl')
 
 parser.add_argument('--train_type', type=str, default='adv', choices=['filter', 'adv'])
-parser.add_argument('--path_model', type=str, default='./model_5_mod_new_toy.pkl')
+parser.add_argument('--path_model', type=str, default='./model_5.pkl')
 
 parser.add_argument('--save_path', type=str, default='./finetune_debug')
 parser.add_argument('--model_load_path', type=str, default='saved_pretrained/checkpoints/model_100000.pkl')
@@ -236,8 +236,8 @@ parser.add_argument('--prob_comp2_final', default=0.2, type=float)
 args = parser.parse_args()
 
 
-if not os.path.exists("plots_activation_space/" +  args.plot_path + '_' + args.data_test):
-    os.makedirs("plots_activation_space/" +  args.plot_path + '_' +  args.data_test )
+if not os.path.exists("plots_activation_space/" +  args.plot_path):
+    os.makedirs("plots_activation_space/" +  args.plot_path)
 
 
 
@@ -1730,6 +1730,8 @@ def evaluate(model, loader, max_iterations=0,is_safety=0,safe=0, opp=0):
                 x = x_unsafe_cap_target.cuda()
                 y = y_unsafe_cap_target.cuda()
             mask = mask.cuda()
+            model = model.cuda()
+
             logits, att_lst, att_lst_act, att_lst_residual, att_lst_copy, _ = model(x,mask=mask)
 
 
@@ -1973,38 +1975,29 @@ mpl.rcParams['ytick.labelsize'] = 4
 
 cos_lst_xunsafe2 = []
 cos_l2_lst_xunsafe2 = []
-cos_mahalanobis_lst_xunsafe2 = []
 
 cos_lst_xunsafe = []
 cos_l2_lst_xunsafe = []
-cos_mahalanobis_lst_xunsafe = []
 
 cos_lst_xsafe2 = []
 cos_l2_lst_xsafe2 = []
-cos_mahalanobis_lst_xsafe2 = []
 
 cos_lst_xsafe = []
 cos_l2_lst_xsafe = []
-cos_mahalanobis_lst_xsafe = []
 
 var_lst_xunsafe2 = []
 var_l2_lst_xunsafe2 = []
-var_mahalanobis_lst_xunsafe2 = []
 
 var_lst_xunsafe = []
 var_l2_lst_xunsafe = []
-var_mahalanobis_lst_xunsafe = []
 
 var_lst_xsafe2 = []
 var_l2_lst_xsafe2 = []
-var_mahalanobis_lst_xsafe2 = []
+
 
 var_lst_xsafe = []
 var_l2_lst_xsafe = []
-var_mahalanobis_lst_xsafe = []
 
-correct_lst_safe_mahalanobis = []
-correct_lst_unsafe_mahalanobis = []
 correct_lst_safe = []
 correct_lst_unsafe = []
 correct_lst_safe_l2 = []
@@ -2051,9 +2044,7 @@ for layer_num in range(num_layers):
     attention_pattern_act_lst_safe_main_pass, attention_pattern_act_lst_unsafe_main_pass, attention_pattern_act_lst_safe_pass, attention_pattern_act_lst_unsafe_pass, val, val2, var_safe, var_unsafe = get_rbf_vec(val_pass, val2_pass, attention_pattern_act_lst_unsafe_main, attention_pattern_act_lst_safe_main, attention_pattern_act_lst_unsafe, attention_pattern_act_lst_safe, start_idx_lst_safe, end_idx_lst_safe, start_idx_lst_unsafe, end_idx_lst_unsafe, start_idx_lst_safe_main, end_idx_lst_safe_main,start_idx_lst_unsafe_main, end_idx_lst_unsafe_main, layer_num, head_num)
     cos_value = 0
     cos_l2 = 0
-    cos_mahalanobis = 0
 
-    lst_mahalanobis_xsafe = []
     lst_l2_xsafe = []
     lst_value_xsafe = []
 
@@ -2065,23 +2056,16 @@ for layer_num in range(num_layers):
         value_l2 = np.linalg.norm(np.array(val)-np.array(attention_pattern_act_lst_unsafe_main_pass[i]))
         cos_l2 = cos_l2 + value_l2
 
-        value_mahalanobis = 0
-        cos_mahalanobis = cos_mahalanobis + value_mahalanobis
 
         lst_value_xsafe.append(value_cos)
         lst_l2_xsafe.append(value_l2)
-        lst_mahalanobis_xsafe.append(value_mahalanobis)
 
     cos_lst_xsafe.append(cos_value/len(attention_pattern_act_lst_unsafe_main_pass))
     cos_l2_lst_xsafe.append(cos_l2/len(attention_pattern_act_lst_unsafe_main_pass))
-    cos_mahalanobis_lst_xsafe.append(cos_mahalanobis/len(attention_pattern_act_lst_unsafe_main_pass))
-
 
     cos_value = 0
     cos_l2 = 0
-    cos_mahalanobis = 0
 
-    lst_mahalanobis_xunsafe = []
     lst_l2_xunsafe = []
     lst_value_xunsafe = []
 
@@ -2092,42 +2076,30 @@ for layer_num in range(num_layers):
         value_l2 = np.linalg.norm(np.array(val2)-np.array(attention_pattern_act_lst_unsafe_main_pass[i]))
         cos_l2 = cos_l2 + value_l2
 
-        value_mahalanobis = 0
-        cos_mahalanobis = cos_mahalanobis + value_mahalanobis
-
         lst_value_xunsafe.append(value_cos)
         lst_l2_xunsafe.append(value_l2)
-        lst_mahalanobis_xunsafe.append(value_mahalanobis)
 
     cos_lst_xunsafe.append(cos_value/len(attention_pattern_act_lst_unsafe_main_pass))
     cos_l2_lst_xunsafe.append(cos_l2/len(attention_pattern_act_lst_unsafe_main_pass))
-    cos_mahalanobis_lst_xunsafe.append(cos_mahalanobis/len(attention_pattern_act_lst_unsafe_main_pass))
-    
 
-    correct_unsafe_mahalanobis = 0
     correct_unsafe_l2 = 0
     correct_unsafe = 0
     for i in range(len(attention_pattern_act_lst_unsafe_main_pass)):
-        correct_unsafe_mahalanobis+=1
         if lst_l2_xsafe[i]>lst_l2_xunsafe[i]:
             correct_unsafe_l2+=1
         if lst_value_xsafe[i]<lst_value_xunsafe[i]:
             correct_unsafe+=1
 
-    correct_unsafe_mahalanobis = correct_unsafe_mahalanobis/len(attention_pattern_act_lst_unsafe_main_pass)
     correct_unsafe_l2 = correct_unsafe_l2/len(attention_pattern_act_lst_unsafe_main_pass)
     correct_unsafe = correct_unsafe/len(attention_pattern_act_lst_unsafe_main_pass)
 
-    correct_lst_unsafe_mahalanobis.append(correct_unsafe_mahalanobis)
     correct_lst_unsafe.append(correct_unsafe)
     correct_lst_unsafe_l2.append(correct_unsafe_l2)
         
 
     cos_value = 0
     cos_l2 = 0
-    cos_mahalanobis = 0
-        
-    lst_mahalanobis_xsafe2 = []
+
     lst_l2_xsafe2 = []
     lst_value_xsafe2 = []
 
@@ -2137,24 +2109,18 @@ for layer_num in range(num_layers):
         cos_value = cos_value + value_cos
         value_l2 = np.linalg.norm(np.array(val)-np.array(attention_pattern_act_lst_safe_main_pass[i]))
         cos_l2 = cos_l2 + value_l2
-        value_mahalanobis = 0
-        cos_mahalanobis = cos_mahalanobis + value_mahalanobis
-    
+
         lst_value_xsafe2.append(value_cos)
         lst_l2_xsafe2.append(value_l2)
-        lst_mahalanobis_xsafe2.append(value_mahalanobis)
 
 
     cos_lst_xsafe2.append(cos_value/len(attention_pattern_act_lst_safe_main_pass))
     cos_l2_lst_xsafe2.append(cos_l2/len(attention_pattern_act_lst_safe_main_pass))
-    cos_mahalanobis_lst_xsafe2.append(cos_mahalanobis/len(attention_pattern_act_lst_safe_main_pass))
 
 
     cos_value = 0
     cos_l2 = 0
-    cos_mahalanobis = 0
         
-    lst_mahalanobis_xunsafe2 = []
     lst_l2_xunsafe2 = []
     lst_value_xunsafe2 = []
 
@@ -2165,53 +2131,40 @@ for layer_num in range(num_layers):
 
         value_l2 = np.linalg.norm(np.array(val2)-np.array(attention_pattern_act_lst_safe_main_pass[i]))
         cos_l2 = cos_l2 + value_l2
-
-        value_mahalanobis = 0
-        cos_mahalanobis = cos_mahalanobis + value_mahalanobis
         
         lst_value_xunsafe2.append(value_cos)
         lst_l2_xunsafe2.append(value_l2)
-        lst_mahalanobis_xunsafe2.append(value_mahalanobis)
 
     cos_lst_xunsafe2.append(cos_value/len(attention_pattern_act_lst_safe_main_pass))
     cos_l2_lst_xunsafe2.append(cos_l2/len(attention_pattern_act_lst_safe_main_pass))
-    cos_mahalanobis_lst_xunsafe2.append(cos_mahalanobis/len(attention_pattern_act_lst_safe_main_pass))
 
 
     
-    correct_unsafe_mahalanobis = 0
     correct_unsafe_l2 = 0
     correct_unsafe = 0
 
-    correct_safe_mahalanobis = 0
     correct_safe_l2 = 0
     correct_safe = 0
 
 
     for i in range(len(attention_pattern_act_lst_safe_main_pass)):
-        if lst_mahalanobis_xsafe2[i]<lst_mahalanobis_xunsafe2[i]:
-            correct_unsafe_mahalanobis+=1
         if lst_l2_xsafe2[i]<lst_l2_xunsafe2[i]:
             correct_unsafe_l2+=1
         if lst_value_xsafe2[i]>lst_value_xunsafe2[i]:
             correct_unsafe+=1
 
 
-    correct_unsafe_mahalanobis = correct_unsafe_mahalanobis/len(attention_pattern_act_lst_safe_main_pass)
     correct_unsafe_l2 = correct_unsafe_l2/len(attention_pattern_act_lst_safe_main_pass)
     correct_unsafe = correct_unsafe/len(attention_pattern_act_lst_safe_main_pass)
 
-    correct_lst_safe_mahalanobis.append(correct_unsafe_mahalanobis)
     correct_lst_safe.append(correct_unsafe)
     correct_lst_safe_l2.append(correct_unsafe_l2)
 
 
     cos_value = 0
     cos_l2 = 0
-    cos_mahalanobis = 0
 
 
-    lst_mahalanobis_xunsafe = []
     lst_l2_xunsafe = []
     lst_value_xunsafe = []
     
@@ -2242,16 +2195,13 @@ for layer_num in range(num_layers):
 
     cos_value = 0
     cos_l2 = 0
-    cos_mahalanobis = 0
 
 
 
 
     cos_value = 0
     cos_l2 = 0
-    cos_mahalanobis = 0
         
-    lst_mahalanobis_xsafe = []
     lst_l2_xsafe = []
     lst_value_xsafe = []
 
@@ -2279,55 +2229,38 @@ for layer_num in range(num_layers):
     cos_diff_safe = np.array(cos_lst_xunsafe2) - np.array(cos_lst_xsafe2)
     cos_diff_unsafe = np.array(cos_lst_xunsafe) - np.array(cos_lst_xsafe)
 
-fig, axs = plt.subplots(2,3, figsize=(6, 4))
-for i in range(2):
-    for j in range(3):
-        if i==0 and j==0:
+fig, axs = plt.subplots(1,2, figsize=(5, 2))
+for i in range(1):
+    for j in range(2):
 
-            l1 = axs[i][j].plot(np.arange(6) ,cos_mahalanobis_lst_xsafe, color='red')[0]
-            l2 = axs[i][j].plot(np.arange(6) ,cos_mahalanobis_lst_xunsafe, color='blue')[0]
+        if j==0:
+            l1 = axs[j].plot(np.arange(6) ,cos_diff_safe, color='green')[0]
+            l2 = axs[j].plot(np.arange(6) ,cos_diff_unsafe, color='red')[0]
+            axs[j].fill_between(np.arange(6) ,np.array(cos_diff_safe)-np.array(var_lst_xsafe), np.array(cos_diff_safe)+np.array(var_lst_xsafe), color='green', alpha=0.25)
+            axs[j].fill_between(np.arange(6) ,np.array(cos_diff_unsafe)-np.array(var_lst_xunsafe), np.array(cos_diff_unsafe)+np.array(var_lst_xunsafe), color='red', alpha=0.25)
 
-
-
-
-
-        if i==0 and j==1:
-            l1 = axs[i][j].plot(np.arange(6) ,cos_diff_safe, color='green')[0]
-            l2 = axs[i][j].plot(np.arange(6) ,cos_diff_unsafe, color='red')[0]
-            axs[i][j].fill_between(np.arange(6) ,np.array(cos_diff_safe)-np.array(var_lst_xsafe), np.array(cos_diff_safe)+np.array(var_lst_xsafe), color='green', alpha=0.25)
-            axs[i][j].fill_between(np.arange(6) ,np.array(cos_diff_unsafe)-np.array(var_lst_xunsafe), np.array(cos_diff_unsafe)+np.array(var_lst_xunsafe), color='red', alpha=0.25)
-
-            np.save("./plots_activation_space/" + args.plot_path + '_cos_safe_' + args.data_test +"_.npy", np.array(cos_diff_safe))
-            np.save("./plots_activation_space/" + args.plot_path + '_cos_unsafe_' + args.data_test +"_.npy", np.array(cos_diff_unsafe))
+            np.save("./plots_activation_space/" + args.plot_path + '/cos_safe_' + args.data_test +"_.npy", np.array(cos_diff_safe))
+            np.save("./plots_activation_space/" + args.plot_path + '/cos_unsafe_' + args.data_test +"_.npy", np.array(cos_diff_unsafe))
 
 
-            np.save("./plots_activation_space/" + args.plot_path + '_var_cos_safe_' + args.data_test +"_.npy", np.array(var_lst_xsafe))
-            np.save("./plots_activation_space/" + args.plot_path + '_var_cos_unsafe_' + args.data_test +"_.npy", np.array(var_lst_xunsafe))
+            np.save("./plots_activation_space/" + args.plot_path + '/var_cos_safe_' + args.data_test +"_.npy", np.array(var_lst_xsafe))
+            np.save("./plots_activation_space/" + args.plot_path + '/var_cos_unsafe_' + args.data_test +"_.npy", np.array(var_lst_xunsafe))
 
 
-        if i==0 and j==2:
+        if j==1:
 
-            l1 = axs[i][j].plot(np.arange(6) ,l2_diff_safe, color='green')[0]
-            l2 = axs[i][j].plot(np.arange(6) ,l2_diff_unsafe, color='red')[0]
-            axs[i][j].fill_between(np.arange(6) ,np.array(l2_diff_safe)-np.array(var_l2_lst_xsafe), np.array(l2_diff_safe)+np.array(var_l2_lst_xsafe), color='green', alpha=0.25)
-            axs[i][j].fill_between(np.arange(6) ,np.array(l2_diff_unsafe)-np.array(var_l2_lst_xunsafe), np.array(l2_diff_unsafe)+np.array(var_l2_lst_xunsafe), color='red', alpha=0.25)
-            np.save("./plots_activation_space/" + args.plot_path + '_l2_safe_' + args.data_test +"_.npy", np.array(l2_diff_safe))
-            np.save("./plots_activation_space/" + args.plot_path + '_l2_unsafe_' + args.data_test +"_.npy", np.array(l2_diff_unsafe))
+            l1 = axs[j].plot(np.arange(6) ,l2_diff_safe, color='green')[0]
+            l2 = axs[j].plot(np.arange(6) ,l2_diff_unsafe, color='red')[0]
+            axs[j].fill_between(np.arange(6) ,np.array(l2_diff_safe)-np.array(var_l2_lst_xsafe), np.array(l2_diff_safe)+np.array(var_l2_lst_xsafe), color='green', alpha=0.25)
+            axs[j].fill_between(np.arange(6) ,np.array(l2_diff_unsafe)-np.array(var_l2_lst_xunsafe), np.array(l2_diff_unsafe)+np.array(var_l2_lst_xunsafe), color='red', alpha=0.25)
+            np.save("./plots_activation_space/" + args.plot_path + '/l2_safe_' + args.data_test +"_.npy", np.array(l2_diff_safe))
+            np.save("./plots_activation_space/" + args.plot_path + '/l2_unsafe_' + args.data_test +"_.npy", np.array(l2_diff_unsafe))
 
-            np.save("./plots_activation_space/" + args.plot_path + '_var_l2_safe_' + args.data_test +"_.npy", np.array(var_l2_lst_xsafe))
-            np.save("./plots_activation_space/" + args.plot_path + '_var_l2_unsafe_' + args.data_test +"_.npy", np.array(var_l2_lst_xunsafe))
-
-        if i==1 and j==0:
-            l1 = axs[i][j].plot(np.arange(6) ,cos_mahalanobis_lst_xsafe2, color='red')[0]
-            l2 = axs[i][j].plot(np.arange(6) ,cos_mahalanobis_lst_xunsafe2, color='blue')[0]
+            np.save("./plots_activation_space/" + args.plot_path + '/var_l2_safe_' + args.data_test +"_.npy", np.array(var_l2_lst_xsafe))
+            np.save("./plots_activation_space/" + args.plot_path + '/var_l2_unsafe_' + args.data_test +"_.npy", np.array(var_l2_lst_xunsafe))
 
 
-        if i==1 and j==1:
-            continue
-
-        if i==1 and j==2:
-            continue
 fig.legend([l1, l2],["distance safe", "distance unsafe"],loc='upper center',fontsize=4)
-plt.savefig("./plots_activation_space/" + args.plot_path + '_' + args.data_test + "_AM.pdf")
+plt.savefig("./plots_activation_space/" + args.plot_path + '/' + args.data_test + ".pdf")
 plt.close('all')
 

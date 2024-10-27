@@ -47,17 +47,17 @@ This repository supports three different safety fine-tuning protocols: supervise
 
 * **Supervised safety fine-tuning (SSFT)**
 ```
-CUDA_VISIBLE_DEVICES=0 python ssft/ssft.py  --grad_norm_clip 1.0 --model_load_path 'saved_pretrained/pretrained_model/model_100000.pkl'  --learning_rate 0.0001 --min_lr 0.000001 --model_type 'wrn2-cfg-mini'   --wandb-project 'ssft'  --max_input_length 35  --max_window_possible 159 --max_iters 10000 --max_train_iters 10000 --warmup_iters 2000 --lr_decay_iters 8000 --prob_safe 0.8 --prob_unsafe 0.2 --safe_branch_prob 0.5 --id_mg_prob 0.5  --save_path 'ssft_train' --wandb-run 'ssft_train'
+CUDA_VISIBLE_DEVICES=0 python ssft/ssft.py  --grad_norm_clip 1.0 --model_load_path 'saved_models/pretrain/model_100000.pkl'  --learning_rate 0.0001 --min_lr 0.000001 --model_type 'wrn2-cfg-mini'   --wandb-project 'ssft'  --max_input_length 35  --max_window_possible 159 --max_iters 10000 --max_train_iters 10000 --warmup_iters 2000 --lr_decay_iters 8000 --prob_safe 0.8 --prob_unsafe 0.2 --safe_branch_prob 0.5 --id_mg_prob 0.5  --save_path 'ssft_train' --wandb-run 'ssft_train'
 ```
 
 * **Direct Preference Opimization (DPO)**
 ```
-CUDA_VISIBLE_DEVICES=0 python dpo/dpo.py  --grad_norm_clip 1.0 --model_load_path 'saved_pretrained/pretrained_model/model_100000.pkl'  --learning_rate 0.0001 --min_lr 0.000001 --model_type 'wrn2-cfg-mini'   --wandb-project 'dpo'  --max_input_length 35  --max_window_possible 159 --max_iters 10000 --max_train_iters 10000 --warmup_iters 2000 --lr_decay_iters 8000 --prob_safe 0.5 --prob_unsafe 0.5 --safe_branch_prob 0.5 --id_mg_prob 0.5 --is_dpo 1 --dpo_weight_safe 0.1 --dpo_weight_unsafe 0.01  --save_path 'dpo_train' --wandb-run 'dpo_train'
+CUDA_VISIBLE_DEVICES=0 python dpo/dpo.py  --grad_norm_clip 1.0 --model_load_path 'saved_models/pretrain/model_100000.pkl'  --learning_rate 0.0001 --min_lr 0.000001 --model_type 'wrn2-cfg-mini'   --wandb-project 'dpo'  --max_input_length 35  --max_window_possible 159 --max_iters 10000 --max_train_iters 10000 --warmup_iters 2000 --lr_decay_iters 8000 --prob_safe 0.5 --prob_unsafe 0.5 --safe_branch_prob 0.5 --id_mg_prob 0.5 --is_dpo 1 --dpo_weight_safe 0.1 --dpo_weight_unsafe 0.01  --save_path 'dpo_train' --wandb-run 'dpo_train'
 ```
 
 * **Unlearning**
 ```
-CUDA_VISIBLE_DEVICES=0 python unlearn/unlearn.py  --grad_norm_clip 1.0 --model_load_path 'saved_pretrained/pretrained_model/model_100000.pkl'  --learning_rate 0.0001 --min_lr 0.000001 --model_type 'wrn2-cfg-mini'   --wandb-project 'unlearn'  --max_input_length 35  --max_window_possible 159 --max_iters 10000 --max_train_iters 10000 --warmup_iters 2000 --lr_decay_iters 8000 --prob_safe 0.5 --prob_unsafe 0.5 --safe_branch_prob 0.5 --id_mg_prob 0.5 --is_unlearn 1 --unlearn_weight_safe 1 --unlearn_weight_unsafe 0.1  --save_path 'unlearn_train' --wandb-run 'unlearn_train'
+CUDA_VISIBLE_DEVICES=0 python unlearn/unlearn.py  --grad_norm_clip 1.0 --model_load_path 'saved_models/pretrain/model_100000.pkl'  --learning_rate 0.0001 --min_lr 0.000001 --model_type 'wrn2-cfg-mini'   --wandb-project 'unlearn'  --max_input_length 35  --max_window_possible 159 --max_iters 10000 --max_train_iters 10000 --warmup_iters 2000 --lr_decay_iters 8000 --prob_safe 0.5 --prob_unsafe 0.5 --safe_branch_prob 0.5 --id_mg_prob 0.5 --is_unlearn 1 --unlearn_weight_safe 1 --unlearn_weight_unsafe 0.1  --save_path 'unlearn_train' --wandb-run 'unlearn_train' 
 ```
 
 ### Evaluations
@@ -65,28 +65,28 @@ Use the ```data_test``` argument to define the test set. It takes the following 
 
 * **Feature space analysis** (Fig. 3):
 ```
-CUDA_VISIBLE_DEVICES=0 python evals/activation_space_analysis.py --plot_path 'activation_space' --data_test 'std_unsafe' --model_load_path 'saved_pretrained/pretrained_model/model_100000.pkl'  --model_type 'wrn2-cfg-mini'  --max_input_length 35  --max_window_possible 159 --max_iters 10000 --max_train_iters 10000  --save_path 'actiation_space'
+CUDA_VISIBLE_DEVICES=0 python evals/activation_space_analysis.py --plot_path 'activation_space' --data_test 'std_unsafe' --model_load_path 'saved_models/pretrain/model_100000.pkl'  --model_type 'wrn2-cfg-mini'  --max_input_length 35  --max_window_possible 159 --max_iters 10000 --max_train_iters 10000  --save_path 'actiation_space'
 ```
 
 The ```threat_count_adv``` arg is used to define the count of appended soft tokens. 
 * **Feature space analysis for adv attacks** (Fig. 7):
 ```
-CUDA_VISIBLE_DEVICES=0 python evals/activation_space_adv_analysis.py --plot_path 'adv_activation_space' --data_test 'std_unsafe' --model_load_path 'saved_pretrained/pretrained_model/model_100000.pkl'  --model_type 'wrn2-cfg-mini'  --max_input_length 35  --max_window_possible 159 --max_iters 10000 --max_train_iters 10000  --save_path 'adv_actiation_space' --threat_count_adv 2
+CUDA_VISIBLE_DEVICES=0 python evals/activation_space_adv_analysis.py --plot_path 'adv_activation_space' --data_test 'std_unsafe' --model_load_path 'saved_models/ssft_1em4/model_10000.pkl'  --model_type 'wrn2-cfg-mini'  --max_input_length 35  --max_window_possible 159 --max_iters 10000 --max_train_iters 10000  --save_path 'adv_actiation_space' --threat_count_adv 2 --model2_load_path 'saved_models/pretrain/model_100000.pkl'
 ```
 
 * **Column space analysis** (Fig. 4):
 ```
-CUDA_VISIBLE_DEVICES=0 python column_space_analysis.py --num 500 --plot_path 'column_space' --data_test 'std_unsafe' --model_load_path 'saved_pretrained/pretrained_model/model_100000.pkl' --model_type 'wrn2-cfg-mini'  --max_input_length 35  --max_window_possible 159 --max_iters 10000  --save_path 'column_space'
+CUDA_VISIBLE_DEVICES=0 python evals/column_space_analysis.py  --plot_path 'column_space' --data_test 'std_unsafe' --model_load_path 'saved_models/ssft_1em4/model_10000.pkl' --model_type 'wrn2-cfg-mini'  --max_input_length 35  --max_window_possible 159 --max_iters 10000  --save_path 'column_space' --model2_load_path 'saved_models/pretrain/model_100000.pkl'
 ```
 
 * **Row space analysis** (Fig. 5):
 ```
-CUDA_VISIBLE_DEVICES=0 python row_space_analysis.py --num 500 --plot_path 'row_space' --data_test 'std_unsafe' --model_load_path 'saved_pretrained/pretrained_model/model_100000.pkl' --model_type 'wrn2-cfg-mini'  --max_input_length 35  --max_window_possible 159   --save_path 'row_space'
+CUDA_VISIBLE_DEVICES=0 python evals/row_space_analysis.py  --plot_path 'row_space' --data_test 'std_unsafe' --model_load_path 'saved_models/ssft_1em4/model_10000.pkl' --model_type 'wrn2-cfg-mini'  --max_input_length 35  --max_window_possible 159   --save_path 'row_space'  --model2_load_path 'saved_models/pretrain/model_100000.pkl'
 ```
 
 * **Lipschitzness analysis** (Fig. 6):
 ```
-CUDA_VISIBLE_DEVICES=2  CUDA_VISIBLE_DEVICES=0 python lipschitzness_analysis.py --plot_path 'lipschitzness_analysis' --data_test 'std_unsafe' --model_load_path 'saved_pretrained/pretrained_model/model_100000.pkl'  --model_type 'wrn2-cfg-mini' --max_input_length 35  --max_window_possible 159 --save_path 'lipschitzness_analysis'
+CUDA_VISIBLE_DEVICES=2  CUDA_VISIBLE_DEVICES=0 python evals/lipschitzness_analysis.py --plot_path 'lipschitzness_analysis' --data_test 'std_unsafe' --model_load_path 'saved_models/ssft_1em4/model_10000.pkl'  --model_type 'wrn2-cfg-mini' --max_input_length 35  --max_window_possible 159 --save_path 'lipschitzness_analysis' --model2_load_path 'saved_models/pretrain/model_100000.pkl'
 ```
 
 Change ```model_load_path``` to load your desired model.
